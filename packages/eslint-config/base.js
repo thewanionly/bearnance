@@ -2,7 +2,23 @@ import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
+import boundaries from "eslint-plugin-boundaries";
+import { fileURLToPath } from "node:url";
+
+const tsconfigBasePath = fileURLToPath(
+  new URL("../typescript-config/base.json", import.meta.url),
+);
+const repoRootPath = fileURLToPath(new URL("../../", import.meta.url));
+
+const workspaceTsconfigPaths = [
+  tsconfigBasePath,
+  fileURLToPath(new URL("../../apps/docs/tsconfig.json", import.meta.url)),
+  fileURLToPath(new URL("../../apps/web/tsconfig.json", import.meta.url)),
+  fileURLToPath(new URL("../../packages/ui/tsconfig.json", import.meta.url)),
+];
+
+const workspacePackageImportPatterns = ["@bearnance/*/src/**"];
+const appImportPatterns = ["@bearnance/docs/**", "@bearnance/web/**"];
 
 /**
  * A shared ESLint configuration for the repository.
@@ -22,11 +38,99 @@ export const config = [
     },
   },
   {
-    plugins: {
-      onlyWarn,
-    },
+    ignores: ["dist/**"],
   },
   {
-    ignores: ["dist/**"],
+    plugins: {
+      boundaries,
+    },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: workspaceTsconfigPaths,
+          noWarnOnMultipleProjects: true,
+        },
+      },
+      "boundaries/root-path": repoRootPath,
+      "boundaries/elements": [
+        { type: "app", pattern: "apps/(*)", capture: ["name"] },
+        { type: "package", pattern: "packages/(*)", capture: ["name"] },
+      ],
+      "boundaries/ignore": [
+        "**/*.test.*",
+        "**/*.spec.*",
+        ".next/**",
+        "dist/**",
+      ],
+    },
+    rules: {
+      "boundaries/dependencies": [
+        "error",
+        {
+          default: "allow",
+          checkAllOrigins: true,
+          rules: [
+            {
+              disallow: {
+                to: {
+                  parent: {
+                    type: "*",
+                  },
+                },
+              },
+              message:
+                "Architectural boundary violation: ${file.type} '${file.name}' cannot import private nested code via '${dependency.source}'. Import through the parent element's public API instead.",
+            },
+            {
+              allow: {
+                dependency: {
+                  relationship: {
+                    to: ["child", "sibling", "uncle"],
+                  },
+                },
+              },
+            },
+            {
+              from: [{ type: "app" }, { type: "package" }],
+              disallow: [
+                {
+                  dependency: {
+                    source: workspacePackageImportPatterns,
+                  },
+                },
+              ],
+              message:
+                "Architectural boundary violation: ${file.type} '${file.name}' cannot import package internals via '${dependency.source}'. Import from the package export instead.",
+            },
+            {
+              from: { type: "app" },
+              disallow: [
+                { to: { type: "app" } },
+                {
+                  dependency: {
+                    source: appImportPatterns,
+                  },
+                },
+              ],
+              message:
+                "Architectural boundary violation: app '${file.name}' cannot import another app via '${dependency.source}'. Apps may depend on packages only.",
+            },
+            {
+              from: { type: "package" },
+              disallow: [
+                { to: { type: "app" } },
+                {
+                  dependency: {
+                    source: appImportPatterns,
+                  },
+                },
+              ],
+              message:
+                "Architectural boundary violation: package '${file.name}' cannot import an app via '${dependency.source}'. Packages must stay app-independent.",
+            },
+          ],
+        },
+      ],
+    },
   },
 ];
