@@ -4,3 +4,5 @@ packages:
 verifyDepsBeforeRun: false
 allowBuilds:
   sharp: true
+minimumReleaseAgeExclude:
+  - eslint@10.6.0
