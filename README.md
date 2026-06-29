@@ -1,159 +1,75 @@
-# Turborepo starter
+# Bearnance
 
-This Turborepo starter is maintained by the Turborepo core team.
+Bearnance is a personal finance app for managing day-to-day money.
 
-## Using this example
+This repository is a pnpm/Turborepo monorepo. The primary product app lives in
+`apps/web`; the other workspace apps and packages support shared tooling,
+configuration, and scaffolded test surfaces.
 
-Run the following command:
+## Requirements
 
-```sh
-npx create-turbo@latest
-```
+- Node.js `^22.13.0 || >=24`
+- pnpm `11.9.0`
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs-test`: a [Next.js](https://nextjs.org/) app
-- `web-test`: another [Next.js](https://nextjs.org/) app
-- `@bearnance/ui-test`: a stub React component library shared by both `web-test` and `docs-test` applications
-- `@bearnance/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@bearnance/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Corepack is the easiest way to use the pinned pnpm version:
 
 ```sh
-cd my-turborepo
-turbo build
+corepack enable
 ```
 
-Without global `turbo`, use your package manager:
+## Getting Started
+
+Install dependencies from the repository root:
 
 ```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+pnpm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Start the Bearnance web app:
 
 ```sh
-turbo build --filter=docs
+pnpm --filter web dev
 ```
 
-Without global `turbo`:
+The app runs at [http://localhost:3000](http://localhost:3000).
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Workspace
 
-### Develop
+### Apps
 
-To develop all apps and packages, run the following command:
+- `apps/web`: the primary Bearnance Next.js app.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Packages
 
-```sh
-cd my-turborepo
-turbo dev
-```
+- `packages/eslint-config`: shared ESLint flat configs.
+- `packages/prettier-config`: shared Prettier config with import and Tailwind sorting.
+- `packages/typescript-config`: shared TypeScript configs.
+- `packages/jest-config`: shared Jest configs and mocks.
 
-Without global `turbo`, use your package manager:
+## Common Commands
 
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
+Run commands from the repository root.
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+| Command                 | Description                                   |
+| ----------------------- | --------------------------------------------- |
+| `pnpm --filter web dev` | Start the primary web app on port 3000.       |
+| `pnpm build`            | Build every workspace through Turborepo.      |
+| `pnpm lint`             | Lint every workspace through Turborepo.       |
+| `pnpm check-types`      | Type-check every workspace through Turborepo. |
+| `pnpm format:check`     | Check formatting across the repository.       |
+| `pnpm format:fix`       | Format the repository.                        |
+| `pnpm cz`               | Create a Conventional Commit with Commitizen. |
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+`pnpm dev` runs every workspace `dev` task through Turborepo. Prefer
+`pnpm --filter web dev` when you only need the product app.
 
-```sh
-turbo dev --filter=web
-```
+## Development Notes
 
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- Workspaces are declared in `pnpm-workspace.yaml` under `apps/*` and
+  `packages/*`.
+- Turborepo task behavior is configured in `turbo.json`.
+- Git hooks are installed by Husky. Staged files are formatted and linted before
+  commit, and commit messages are checked with Commitlint.
+- Commit messages follow
+  [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+  See `CONTRIBUTING.md` for the contribution workflow.
