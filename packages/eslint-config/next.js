@@ -1,12 +1,14 @@
-import js from "@eslint/js";
-import { globalIgnores } from "eslint/config";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import eslintReact from "@eslint-react/eslint-plugin";
-import globals from "globals";
-import pluginNext from "@next/eslint-plugin-next";
-import { config as baseConfig } from "./base.js";
+import eslintConfigPrettier from 'eslint-config-prettier';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import { globalIgnores } from 'eslint/config';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+import eslintReact from '@eslint-react/eslint-plugin';
+import js from '@eslint/js';
+import pluginNext from '@next/eslint-plugin-next';
+
+import { config as baseConfig } from './base.js';
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
@@ -20,12 +22,12 @@ export const nextJsConfig = [
   ...tseslint.configs.recommended,
   globalIgnores([
     // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
   ]),
-  eslintReact.configs["recommended-typescript"],
+  eslintReact.configs['recommended-typescript'],
   {
     languageOptions: {
       globals: {
@@ -35,20 +37,20 @@ export const nextJsConfig = [
   },
   {
     plugins: {
-      "@next/next": pluginNext,
+      '@next/next': pluginNext,
     },
     rules: {
       ...pluginNext.configs.recommended.rules,
-      ...pluginNext.configs["core-web-vitals"].rules,
+      ...pluginNext.configs['core-web-vitals'].rules,
     },
   },
   {
     plugins: {
-      "react-hooks": pluginReactHooks,
+      'react-hooks': pluginReactHooks,
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
     },
   },
-  eslintReact.configs["disable-conflict-eslint-plugin-react-hooks"],
+  eslintReact.configs['disable-conflict-eslint-plugin-react-hooks'],
 ];

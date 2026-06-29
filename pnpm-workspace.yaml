@@ -1,6 +1,6 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 verifyDepsBeforeRun: false
 allowBuilds:
   sharp: true

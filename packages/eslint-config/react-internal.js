@@ -1,10 +1,12 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import eslintReact from "@eslint-react/eslint-plugin";
-import globals from "globals";
-import { config as baseConfig } from "./base.js";
+import eslintConfigPrettier from 'eslint-config-prettier';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+import eslintReact from '@eslint-react/eslint-plugin';
+import js from '@eslint/js';
+
+import { config as baseConfig } from './base.js';
 
 /**
  * A custom ESLint configuration for libraries that use React.
@@ -15,7 +17,7 @@ export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
-  eslintReact.configs["recommended-typescript"],
+  eslintReact.configs['recommended-typescript'],
   {
     languageOptions: {
       globals: {
@@ -26,11 +28,11 @@ export const config = [
   },
   {
     plugins: {
-      "react-hooks": pluginReactHooks,
+      'react-hooks': pluginReactHooks,
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
     },
   },
-  eslintReact.configs["disable-conflict-eslint-plugin-react-hooks"],
+  eslintReact.configs['disable-conflict-eslint-plugin-react-hooks'],
 ];

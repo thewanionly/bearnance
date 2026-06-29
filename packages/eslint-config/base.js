@@ -1,24 +1,25 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
-import boundaries from "eslint-plugin-boundaries";
-import { fileURLToPath } from "node:url";
+import eslintConfigPrettier from 'eslint-config-prettier';
+import boundaries from 'eslint-plugin-boundaries';
+import turboPlugin from 'eslint-plugin-turbo';
+import { fileURLToPath } from 'node:url';
+import tseslint from 'typescript-eslint';
+
+import js from '@eslint/js';
 
 const tsconfigBasePath = fileURLToPath(
-  new URL("../typescript-config/base.json", import.meta.url),
+  new URL('../typescript-config/base.json', import.meta.url)
 );
-const repoRootPath = fileURLToPath(new URL("../../", import.meta.url));
+const repoRootPath = fileURLToPath(new URL('../../', import.meta.url));
 
 const workspaceTsconfigPaths = [
   tsconfigBasePath,
-  fileURLToPath(new URL("../../apps/docs/tsconfig.json", import.meta.url)),
-  fileURLToPath(new URL("../../apps/web/tsconfig.json", import.meta.url)),
-  fileURLToPath(new URL("../../packages/ui/tsconfig.json", import.meta.url)),
+  fileURLToPath(new URL('../../apps/docs/tsconfig.json', import.meta.url)),
+  fileURLToPath(new URL('../../apps/web/tsconfig.json', import.meta.url)),
+  fileURLToPath(new URL('../../packages/ui/tsconfig.json', import.meta.url)),
 ];
 
-const workspacePackageImportPatterns = ["@bearnance/*/src/**"];
-const appImportPatterns = ["@bearnance/docs/**", "@bearnance/web/**"];
+const workspacePackageImportPatterns = ['@bearnance/*/src/**'];
+const appImportPatterns = ['@bearnance/docs/**', '@bearnance/web/**'];
 
 /**
  * A shared ESLint configuration for the repository.
@@ -34,47 +35,47 @@ export const config = [
       turbo: turboPlugin,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+      'turbo/no-undeclared-env-vars': 'warn',
     },
   },
   {
-    ignores: ["dist/**"],
+    ignores: ['dist/**'],
   },
   {
     plugins: {
       boundaries,
     },
     settings: {
-      "import/resolver": {
+      'import/resolver': {
         typescript: {
           project: workspaceTsconfigPaths,
           noWarnOnMultipleProjects: true,
         },
       },
-      "boundaries/root-path": repoRootPath,
-      "boundaries/elements": [
-        { type: "app", pattern: "apps/(*)", capture: ["name"] },
-        { type: "package", pattern: "packages/(*)", capture: ["name"] },
+      'boundaries/root-path': repoRootPath,
+      'boundaries/elements': [
+        { type: 'app', pattern: 'apps/(*)', capture: ['name'] },
+        { type: 'package', pattern: 'packages/(*)', capture: ['name'] },
       ],
-      "boundaries/ignore": [
-        "**/*.test.*",
-        "**/*.spec.*",
-        ".next/**",
-        "dist/**",
+      'boundaries/ignore': [
+        '**/*.test.*',
+        '**/*.spec.*',
+        '.next/**',
+        'dist/**',
       ],
     },
     rules: {
-      "boundaries/dependencies": [
-        "error",
+      'boundaries/dependencies': [
+        'error',
         {
-          default: "allow",
+          default: 'allow',
           checkAllOrigins: true,
           rules: [
             {
               disallow: {
                 to: {
                   parent: {
-                    type: "*",
+                    type: '*',
                   },
                 },
               },
@@ -85,13 +86,13 @@ export const config = [
               allow: {
                 dependency: {
                   relationship: {
-                    to: ["child", "sibling", "uncle"],
+                    to: ['child', 'sibling', 'uncle'],
                   },
                 },
               },
             },
             {
-              from: [{ type: "app" }, { type: "package" }],
+              from: [{ type: 'app' }, { type: 'package' }],
               disallow: [
                 {
                   dependency: {
@@ -103,9 +104,9 @@ export const config = [
                 "Architectural boundary violation: ${file.type} '${file.name}' cannot import package internals via '${dependency.source}'. Import from the package export instead.",
             },
             {
-              from: { type: "app" },
+              from: { type: 'app' },
               disallow: [
-                { to: { type: "app" } },
+                { to: { type: 'app' } },
                 {
                   dependency: {
                     source: appImportPatterns,
@@ -116,9 +117,9 @@ export const config = [
                 "Architectural boundary violation: app '${file.name}' cannot import another app via '${dependency.source}'. Apps may depend on packages only.",
             },
             {
-              from: { type: "package" },
+              from: { type: 'package' },
               disallow: [
-                { to: { type: "app" } },
+                { to: { type: 'app' } },
                 {
                   dependency: {
                     source: appImportPatterns,
