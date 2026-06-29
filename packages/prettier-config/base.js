@@ -18,6 +18,7 @@ const config = {
     '^@(.*)$',
     '^([./])|^([../])',
   ],
+  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   plugins: [

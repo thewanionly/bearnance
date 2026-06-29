@@ -3,8 +3,9 @@
 Bearnance is a personal finance app for managing day-to-day money.
 
 This repository is a pnpm/Turborepo monorepo. The primary product app lives in
-`apps/web`; the other workspace apps and packages support shared tooling,
-configuration, and scaffolded test surfaces.
+`apps/web`, and the backend API lives in `apps/api`; the other workspace apps
+and packages support shared tooling, configuration, and scaffolded test
+surfaces.
 
 ## Requirements
 
@@ -33,10 +34,19 @@ pnpm --filter web dev
 
 The app runs at [http://localhost:3000](http://localhost:3000).
 
+Start the Bearnance API:
+
+```sh
+pnpm --filter api dev
+```
+
+The API runs at [http://localhost:3002/api/v1](http://localhost:3002/api/v1).
+
 ## Workspace
 
 ### Apps
 
+- `apps/api`: the Bearnance NestJS backend API.
 - `apps/web`: the primary Bearnance Next.js app.
 
 ### Packages
@@ -53,6 +63,7 @@ Run commands from the repository root.
 | Command                 | Description                                   |
 | ----------------------- | --------------------------------------------- |
 | `pnpm --filter web dev` | Start the primary web app on port 3000.       |
+| `pnpm --filter api dev` | Start the backend API on port 3002.           |
 | `pnpm build`            | Build every workspace through Turborepo.      |
 | `pnpm lint`             | Lint every workspace through Turborepo.       |
 | `pnpm check-types`      | Type-check every workspace through Turborepo. |
