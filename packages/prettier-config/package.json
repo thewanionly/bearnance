@@ -1,0 +1,16 @@
+{
+  "name": "@bearnance/prettier-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./base.js"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "prettier-plugin-tailwindcss": "^0.8.0"
+  },
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

@@ -5,10 +5,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint --continue",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "pnpm format:fix",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@bearnance/prettier-config": "workspace:*",
     "prettier": "^3.7.4",
     "turbo": "^2.10.0",
     "typescript": "6.0.3"
