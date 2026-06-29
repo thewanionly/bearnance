@@ -1,0 +1,27 @@
+{
+  "name": "@bearnance/jest-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./base.js",
+    "./mocks/file": "./mocks/file.cjs",
+    "./mocks/style": "./mocks/style.cjs",
+    "./next-js": "./next.js",
+    "./node": "./node.js",
+    "./react": "./react.js"
+  },
+  "peerDependencies": {
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
+    "ts-jest": "^29.4.0"
+  },
+  "peerDependenciesMeta": {
+    "jest-environment-jsdom": {
+      "optional": true
+    },
+    "ts-jest": {
+      "optional": true
+    }
+  }
+}
