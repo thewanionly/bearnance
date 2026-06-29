@@ -1,5 +1,6 @@
 node_modules
 .turbo
+.husky
 
 # Build outputs
 .next

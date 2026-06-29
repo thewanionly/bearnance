@@ -3,14 +3,29 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "commitlint": "commitlint",
+    "cz": "cz",
     "dev": "turbo run dev",
     "lint": "turbo run lint --continue",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
+    "lint-staged": "lint-staged",
+    "prepare": "husky",
     "check-types": "turbo run check-types"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "devDependencies": {
     "@bearnance/prettier-config": "workspace:*",
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
+    "commitizen": "^4.3.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "prettier": "^3.7.4",
     "turbo": "^2.10.0",
     "typescript": "6.0.3"
