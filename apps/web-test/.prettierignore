@@ -1,6 +1,0 @@
-node_modules
-.next
-.turbo
-dist
-coverage
-next-env.d.ts
