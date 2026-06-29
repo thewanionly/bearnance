@@ -14,6 +14,7 @@ const repoRootPath = fileURLToPath(new URL('../../', import.meta.url));
 const workspaceTsconfigPaths = [
   tsconfigBasePath,
   fileURLToPath(new URL('../../apps/docs-test/tsconfig.json', import.meta.url)),
+  fileURLToPath(new URL('../../apps/web/tsconfig.json', import.meta.url)),
   fileURLToPath(new URL('../../apps/web-test/tsconfig.json', import.meta.url)),
   fileURLToPath(
     new URL('../../packages/ui-test/tsconfig.json', import.meta.url)
@@ -21,7 +22,11 @@ const workspaceTsconfigPaths = [
 ];
 
 const workspacePackageImportPatterns = ['@bearnance/*/src/**'];
-const appImportPatterns = ['@bearnance/docs-test/**', '@bearnance/web-test/**'];
+const appImportPatterns = [
+  '@bearnance/docs-test/**',
+  '@bearnance/web/**',
+  '@bearnance/web-test/**',
+];
 
 /**
  * A shared ESLint configuration for the repository.
