@@ -39,11 +39,11 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
-  apps/docs:
+  apps/docs-test:
     dependencies:
-      '@bearnance/ui':
+      '@bearnance/ui-test':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/ui-test
       next:
         specifier: 16.2.0
         version: 16.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -82,11 +82,11 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
-  apps/web:
+  apps/web-test:
     dependencies:
-      '@bearnance/ui':
+      '@bearnance/ui-test':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/ui-test
       next:
         specifier: 16.2.0
         version: 16.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -193,7 +193,7 @@ importers:
 
   packages/typescript-config: {}
 
-  packages/ui:
+  packages/ui-test:
     dependencies:
       react:
         specifier: ^19.2.0

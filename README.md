@@ -16,9 +16,9 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@bearnance/ui`: a stub React component library shared by both `web` and `docs` applications
+- `docs-test`: a [Next.js](https://nextjs.org/) app
+- `web-test`: another [Next.js](https://nextjs.org/) app
+- `@bearnance/ui-test`: a stub React component library shared by both `web-test` and `docs-test` applications
 - `@bearnance/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@bearnance/typescript-config`: `tsconfig.json`s used throughout the monorepo
 

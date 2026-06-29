@@ -2,7 +2,7 @@ import path from 'node:path';
 
 const repoRoot = process.cwd();
 const lintedCodeFilePattern =
-  /^(apps\/docs|apps\/web|packages\/ui)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
+  /^(apps\/docs-test|apps\/web-test|packages\/ui-test)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
 
 const toAbsoluteFilePath = (file) =>
   path.isAbsolute(file) ? file : path.resolve(file);
@@ -46,15 +46,21 @@ export default {
         )
       )
     ),
-  'apps/docs/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(lintWorkspace('docs', 'apps/docs', files), formatFiles(files)),
-  ],
-  'apps/web/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(lintWorkspace('web', 'apps/web', files), formatFiles(files)),
-  ],
-  'packages/ui/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
+  'apps/docs-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
     ...commands(
-      lintWorkspace('@bearnance/ui', 'packages/ui', files),
+      lintWorkspace('docs-test', 'apps/docs-test', files),
+      formatFiles(files)
+    ),
+  ],
+  'apps/web-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
+    ...commands(
+      lintWorkspace('web-test', 'apps/web-test', files),
+      formatFiles(files)
+    ),
+  ],
+  'packages/ui-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
+    ...commands(
+      lintWorkspace('@bearnance/ui-test', 'packages/ui-test', files),
       formatFiles(files)
     ),
   ],
