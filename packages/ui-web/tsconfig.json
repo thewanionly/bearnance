@@ -1,0 +1,13 @@
+{
+  "extends": "@bearnance/typescript-config/react-library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolvePackageJsonImports": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

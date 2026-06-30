@@ -2,7 +2,7 @@ import path from 'node:path';
 
 const repoRoot = process.cwd();
 const lintedCodeFilePattern =
-  /^(apps\/api|apps\/docs-test|packages\/ui-test)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
+  /^(apps\/api|apps\/docs-test|packages\/ui-test|packages\/ui-web)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
 
 const toAbsoluteFilePath = (file) =>
   path.isAbsolute(file) ? file : path.resolve(file);
@@ -58,6 +58,12 @@ export default {
   'packages/ui-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
     ...commands(
       lintWorkspace('@bearnance/ui-test', 'packages/ui-test', files),
+      formatFiles(files)
+    ),
+  ],
+  'packages/ui-web/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
+    ...commands(
+      lintWorkspace('@bearnance/ui-web', 'packages/ui-web', files),
       formatFiles(files)
     ),
   ],

@@ -6,10 +6,7 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",

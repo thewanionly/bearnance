@@ -64,7 +64,7 @@ apps/web
 
 - `src/app/layout.tsx` owns the root document shell and app metadata.
 - `src/app/page.tsx` is the current home route.
-- `src/app/globals.css` imports Tailwind and defines global theme variables.
-- The `@/*` TypeScript path alias resolves to `src/*`.
+- `src/app/globals.css` imports the shared `@bearnance/ui-web` stylesheet.
+- Local package imports use `#components/*`, `#hooks/*`, and `#lib/*`.
 - No environment variables are required for the app yet. Future `.env*` files
   are included in Turborepo build inputs.
