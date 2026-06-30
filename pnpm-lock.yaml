@@ -320,6 +320,33 @@ importers:
 
   packages/typescript-config: {}
 
+  packages/ui-mobile:
+    devDependencies:
+      '@bearnance/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@bearnance/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@bearnance/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      '@types/react':
+        specifier: 19.2.2
+        version: 19.2.2
+      eslint:
+        specifier: ^10.6.0
+        version: 10.6.0(jiti@2.7.0)
+      prettier:
+        specifier: ^3.7.4
+        version: 3.7.4
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+
   packages/ui-web:
     dependencies:
       class-variance-authority:
