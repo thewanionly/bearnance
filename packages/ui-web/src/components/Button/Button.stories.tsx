@@ -1,16 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from './button';
+import { Button } from './Button';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Web/Button',
   component: Button,
   parameters: {
     layout: 'centered',
   },
-
   tags: ['autodocs'],
-
   argTypes: {
     variant: {
       control: 'select',
@@ -40,6 +38,7 @@ const meta = {
 } satisfies Meta<typeof Button>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
@@ -50,21 +49,28 @@ export const Default: Story = {
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
     children: 'Start',
+    variant: 'secondary',
   },
 };
 
 export const Outline: Story = {
   args: {
-    variant: 'outline',
     children: 'Start',
+    variant: 'outline',
   },
 };
 
 export const Destructive: Story = {
   args: {
-    variant: 'destructive',
     children: 'Start',
+    variant: 'destructive',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: 'Start',
+    disabled: true,
   },
 };

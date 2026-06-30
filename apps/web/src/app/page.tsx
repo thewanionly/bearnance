@@ -1,4 +1,4 @@
-import { Button } from '@bearnance/ui-web/components/button';
+import { Button } from '@bearnance/ui-web/components/Button';
 
 export default function Home() {
   return (
