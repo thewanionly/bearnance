@@ -15,6 +15,7 @@ const workspaceTsconfigPaths = [
   tsconfigBasePath,
   fileURLToPath(new URL('../../apps/api/tsconfig.json', import.meta.url)),
   fileURLToPath(new URL('../../apps/docs-test/tsconfig.json', import.meta.url)),
+  fileURLToPath(new URL('../../apps/ui-docs/tsconfig.json', import.meta.url)),
   fileURLToPath(new URL('../../apps/web/tsconfig.json', import.meta.url)),
   fileURLToPath(
     new URL('../../packages/ui-test/tsconfig.json', import.meta.url)
@@ -25,6 +26,7 @@ const workspacePackageImportPatterns = ['@bearnance/*/src/**'];
 const appImportPatterns = [
   '@bearnance/api/**',
   '@bearnance/docs-test/**',
+  '@bearnance/ui-docs/**',
   '@bearnance/web/**',
 ];
 

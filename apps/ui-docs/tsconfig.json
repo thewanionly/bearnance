@@ -1,0 +1,17 @@
+{
+  "extends": "@bearnance/typescript-config/react-library.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "types": ["node", "vite/client", "vitest/config"]
+  },
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "vite.config.ts",
+    "vitest.shims.d.ts"
+  ],
+  "exclude": ["node_modules", "storybook-static"]
+}
