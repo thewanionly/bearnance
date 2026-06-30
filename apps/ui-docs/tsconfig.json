@@ -10,6 +10,10 @@
   "include": [
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
+    "../../packages/ui-mobile/src/**/*.ts",
+    "../../packages/ui-mobile/src/**/*.tsx",
+    "../../packages/ui-web/src/**/*.ts",
+    "../../packages/ui-web/src/**/*.tsx",
     "vite.config.ts",
     "vitest.shims.d.ts"
   ],
