@@ -2,10 +2,9 @@
 
 Bearnance is a personal finance app for managing day-to-day money.
 
-This repository is a pnpm/Turborepo monorepo. The primary product app lives in
-`apps/web`, and the backend API lives in `apps/api`; the other workspace apps
-and packages support shared tooling, configuration, and scaffolded test
-surfaces.
+This repository is a pnpm/Turborepo monorepo. The product frontend lives in
+`apps/web`, the backend API lives in `apps/api`, and shared web/mobile UI
+components are documented in `apps/ui-docs`.
 
 ## Requirements
 
@@ -42,43 +41,59 @@ pnpm --filter api dev
 
 The API runs at [http://localhost:3002/api/v1](http://localhost:3002/api/v1).
 
+Start the UI component docs:
+
+```sh
+pnpm --filter ui-docs dev
+```
+
+Storybook runs at [http://localhost:6006](http://localhost:6006).
+
 ## Workspace
 
 ### Apps
 
 - `apps/api`: the Bearnance NestJS backend API.
+- `apps/ui-docs`: Storybook docs for shared web and mobile UI components.
 - `apps/web`: the primary Bearnance Next.js app.
 
 ### Packages
 
 - `packages/eslint-config`: shared ESLint flat configs.
+- `packages/jest-config`: shared Jest configs and mocks.
 - `packages/prettier-config`: shared Prettier config with import and Tailwind sorting.
 - `packages/typescript-config`: shared TypeScript configs.
-- `packages/jest-config`: shared Jest configs and mocks.
+- `packages/ui-mobile`: shared React Native UI components.
+- `packages/ui-web`: shared React/Tailwind UI components.
 
 ## Common Commands
 
 Run commands from the repository root.
 
-| Command                 | Description                                   |
-| ----------------------- | --------------------------------------------- |
-| `pnpm --filter web dev` | Start the primary web app on port 3000.       |
-| `pnpm --filter api dev` | Start the backend API on port 3002.           |
-| `pnpm build`            | Build every workspace through Turborepo.      |
-| `pnpm lint`             | Lint every workspace through Turborepo.       |
-| `pnpm check-types`      | Type-check every workspace through Turborepo. |
-| `pnpm format:check`     | Check formatting across the repository.       |
-| `pnpm format:fix`       | Format the repository.                        |
-| `pnpm cz`               | Create a Conventional Commit with Commitizen. |
+| Command                                   | Description                                   |
+| ----------------------------------------- | --------------------------------------------- |
+| `pnpm --filter web dev`                   | Start the primary web app on port 3000.       |
+| `pnpm --filter api dev`                   | Start the backend API on port 3002.           |
+| `pnpm --filter ui-docs dev`               | Start Storybook on port 6006.                 |
+| `pnpm --filter ui-docs build:storybook`   | Build the UI docs into `storybook-static`.    |
+| `pnpm --filter @bearnance/ui-mobile test` | Run the React Native UI package tests.        |
+| `pnpm build`                              | Build every workspace through Turborepo.      |
+| `pnpm lint`                               | Lint every workspace through Turborepo.       |
+| `pnpm check-types`                        | Type-check every workspace through Turborepo. |
+| `pnpm format:check`                       | Check formatting across the repository.       |
+| `pnpm format:fix`                         | Format the repository.                        |
+| `pnpm cz`                                 | Create a Conventional Commit with Commitizen. |
 
-`pnpm dev` runs every workspace `dev` task through Turborepo. Prefer
-`pnpm --filter web dev` when you only need the product app.
+`pnpm dev` runs every workspace `dev` task through Turborepo. Prefer filtered
+commands when you only need one app.
 
 ## Development Notes
 
 - Workspaces are declared in `pnpm-workspace.yaml` under `apps/*` and
   `packages/*`.
 - Turborepo task behavior is configured in `turbo.json`.
+- UI component stories live beside their components in `packages/ui-web/src` and
+  `packages/ui-mobile/src`; `apps/ui-docs` discovers them from those packages.
 - Git hooks are installed by Husky. Staged files are formatted and linted before
   commit, and commit messages are checked with Commitlint.
 - Commit messages follow
