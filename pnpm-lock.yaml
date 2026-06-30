@@ -121,49 +121,6 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
-  apps/docs-test:
-    dependencies:
-      '@bearnance/ui-test':
-        specifier: workspace:*
-        version: link:../../packages/ui-test
-      next:
-        specifier: 16.2.0
-        version: 16.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      react:
-        specifier: ^19.2.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.2.0
-        version: 19.2.0(react@19.2.0)
-    devDependencies:
-      '@bearnance/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@bearnance/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@bearnance/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      '@types/react':
-        specifier: 19.2.2
-        version: 19.2.2
-      '@types/react-dom':
-        specifier: 19.2.2
-        version: 19.2.2(@types/react@19.2.2)
-      eslint:
-        specifier: ^10.6.0
-        version: 10.6.0(jiti@2.7.0)
-      prettier:
-        specifier: ^3.7.4
-        version: 3.7.4
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-
   apps/ui-docs:
     dependencies:
       '@bearnance/ui-web':
@@ -362,43 +319,6 @@ importers:
         version: 0.8.0(@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.7.4))(prettier@3.7.4)
 
   packages/typescript-config: {}
-
-  packages/ui-test:
-    dependencies:
-      react:
-        specifier: ^19.2.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.2.0
-        version: 19.2.0(react@19.2.0)
-    devDependencies:
-      '@bearnance/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@bearnance/prettier-config':
-        specifier: workspace:*
-        version: link:../prettier-config
-      '@bearnance/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      '@types/react':
-        specifier: 19.2.2
-        version: 19.2.2
-      '@types/react-dom':
-        specifier: 19.2.2
-        version: 19.2.2(@types/react@19.2.2)
-      eslint:
-        specifier: ^10.6.0
-        version: 10.6.0(jiti@2.7.0)
-      prettier:
-        specifier: ^3.7.4
-        version: 3.7.4
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
 
   packages/ui-web:
     dependencies:

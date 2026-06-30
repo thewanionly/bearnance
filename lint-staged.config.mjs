@@ -2,7 +2,7 @@ import path from 'node:path';
 
 const repoRoot = process.cwd();
 const lintedCodeFilePattern =
-  /^(apps\/api|apps\/docs-test|apps\/ui-docs|packages\/ui-test|packages\/ui-web)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
+  /^(apps\/api|apps\/ui-docs|packages\/ui-mobile|packages\/ui-web)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
 
 const toAbsoluteFilePath = (file) =>
   path.isAbsolute(file) ? file : path.resolve(file);
@@ -49,21 +49,15 @@ export default {
   'apps/api/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
     ...commands(lintWorkspace('api', 'apps/api', files), formatFiles(files)),
   ],
-  'apps/docs-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(
-      lintWorkspace('docs-test', 'apps/docs-test', files),
-      formatFiles(files)
-    ),
-  ],
   'apps/ui-docs/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
     ...commands(
       lintWorkspace('ui-docs', 'apps/ui-docs', files),
       formatFiles(files)
     ),
   ],
-  'packages/ui-test/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
+  'packages/ui-mobile/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
     ...commands(
-      lintWorkspace('@bearnance/ui-test', 'packages/ui-test', files),
+      lintWorkspace('@bearnance/ui-mobile', 'packages/ui-mobile', files),
       formatFiles(files)
     ),
   ],
