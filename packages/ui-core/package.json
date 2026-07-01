@@ -1,0 +1,33 @@
+{
+  "name": "@bearnance/ui-core",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./avatar": "./src/avatar.ts",
+    "./button": "./src/button.ts",
+    "./input": "./src/input.ts",
+    "./layout": "./src/layout.ts",
+    "./list-item": "./src/list-item.ts",
+    "./modal": "./src/modal.ts",
+    "./navigation": "./src/navigation.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bearnance/design-tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@bearnance/eslint-config": "workspace:*",
+    "@bearnance/prettier-config": "workspace:*",
+    "@bearnance/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "eslint": "^10.6.0",
+    "prettier": "^3.7.4",
+    "typescript": "6.0.3"
+  }
+}

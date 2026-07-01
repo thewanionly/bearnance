@@ -1,0 +1,30 @@
+{
+  "name": "@bearnance/design-tokens",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./breakpoints": "./src/breakpoints.ts",
+    "./colors": "./src/colors.ts",
+    "./css": "./src/css.ts",
+    "./effects": "./src/effects.ts",
+    "./spacing": "./src/spacing.ts",
+    "./theme.css": "./src/theme.css",
+    "./typography": "./src/typography.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@bearnance/eslint-config": "workspace:*",
+    "@bearnance/prettier-config": "workspace:*",
+    "@bearnance/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "eslint": "^10.6.0",
+    "prettier": "^3.7.4",
+    "typescript": "6.0.3"
+  }
+}

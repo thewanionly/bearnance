@@ -16,11 +16,11 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg'],
+      options: ['default', 'compact'],
     },
     variant: {
       control: 'select',
-      options: ['default', 'secondary', 'outline', 'ghost', 'destructive'],
+      options: ['primary', 'secondary', 'tertiary', 'destructive'],
     },
   },
 } satisfies Meta<typeof Button>;
@@ -42,10 +42,17 @@ export const Secondary: Story = {
   },
 };
 
-export const Outline: Story = {
+export const Tertiary: Story = {
   args: {
     children: 'Start',
-    variant: 'outline',
+    variant: 'tertiary',
+  },
+};
+
+export const Compact: Story = {
+  args: {
+    children: 'Start',
+    size: 'compact',
   },
 };
 

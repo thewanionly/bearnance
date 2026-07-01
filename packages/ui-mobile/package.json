@@ -26,6 +26,10 @@
     "react": "^19.2.3",
     "react-native": ">=0.78"
   },
+  "dependencies": {
+    "@bearnance/design-tokens": "workspace:*",
+    "@bearnance/ui-core": "workspace:*"
+  },
   "devDependencies": {
     "@bearnance/eslint-config": "workspace:*",
     "@bearnance/jest-config": "workspace:*",

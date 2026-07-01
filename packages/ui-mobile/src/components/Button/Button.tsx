@@ -9,14 +9,21 @@ import type {
 } from 'react-native';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-export type ButtonVariant =
-  | 'default'
-  | 'secondary'
-  | 'outline'
-  | 'ghost'
-  | 'destructive';
-
-export type ButtonSize = 'default' | 'sm' | 'lg';
+import { colors } from '@bearnance/design-tokens/colors';
+import { spacing } from '@bearnance/design-tokens/spacing';
+import {
+  fontFamilies,
+  fontSizes,
+  fontWeights,
+  textPresets,
+} from '@bearnance/design-tokens/typography';
+import {
+  type ButtonSize,
+  type ButtonVariant,
+  buttonContract,
+  buttonSizes,
+  buttonVariants,
+} from '@bearnance/ui-core/button';
 
 export type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
   children: ReactNode;
@@ -31,10 +38,10 @@ export function Button({
   children,
   disabled = false,
   onPress,
-  size = 'default',
+  size = buttonContract.defaultSize,
   style,
   textStyle,
-  variant = 'default',
+  variant = buttonContract.defaultVariant,
   ...props
 }: ButtonProps) {
   const isDisabled = disabled === true;
@@ -95,78 +102,72 @@ const styles = StyleSheet.create({
   },
 });
 
-const buttonSizeStyles = StyleSheet.create<Record<ButtonSize, ViewStyle>>({
-  default: {
-    minHeight: 44,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  lg: {
-    minHeight: 52,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  sm: {
-    minHeight: 36,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-});
+const createButtonSizeStyles = () =>
+  Object.fromEntries(
+    buttonSizes.map((size) => {
+      const sizeContract = buttonContract.sizes[size];
 
-const textSizeStyles = StyleSheet.create<Record<ButtonSize, TextStyle>>({
-  default: {
-    fontSize: 15,
-    lineHeight: 20,
-  },
-  lg: {
-    fontSize: 16,
-    lineHeight: 22,
-  },
-  sm: {
-    fontSize: 14,
-    lineHeight: 18,
-  },
-});
+      return [
+        size,
+        {
+          minHeight: sizeContract.minHeight,
+          paddingHorizontal: spacing[sizeContract.paddingX],
+          paddingVertical: spacing[sizeContract.paddingY],
+        },
+      ];
+    })
+  ) as Record<ButtonSize, ViewStyle>;
 
-const buttonVariantStyles = StyleSheet.create<Record<ButtonVariant, ViewStyle>>(
-  {
-    default: {
-      backgroundColor: '#111827',
-      borderColor: '#111827',
-    },
-    destructive: {
-      backgroundColor: '#dc2626',
-      borderColor: '#dc2626',
-    },
-    ghost: {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-    },
-    outline: {
-      backgroundColor: 'transparent',
-      borderColor: '#d1d5db',
-    },
-    secondary: {
-      backgroundColor: '#f3f4f6',
-      borderColor: '#e5e7eb',
-    },
-  }
-);
+const createTextSizeStyles = () =>
+  Object.fromEntries(
+    buttonSizes.map((size) => {
+      const sizeContract = buttonContract.sizes[size];
+      const textPreset = textPresets[sizeContract.textPreset];
 
-const textVariantStyles = StyleSheet.create<Record<ButtonVariant, TextStyle>>({
-  default: {
-    color: '#ffffff',
-  },
-  destructive: {
-    color: '#ffffff',
-  },
-  ghost: {
-    color: '#111827',
-  },
-  outline: {
-    color: '#111827',
-  },
-  secondary: {
-    color: '#111827',
-  },
-});
+      return [
+        size,
+        {
+          fontFamily: fontFamilies[textPreset.fontFamily],
+          fontSize: fontSizes[textPreset.fontSize],
+          fontWeight:
+            `${fontWeights[textPreset.fontWeight]}` as TextStyle['fontWeight'],
+          letterSpacing: textPreset.letterSpacing,
+          lineHeight: textPreset.lineHeight,
+        },
+      ];
+    })
+  ) as Record<ButtonSize, TextStyle>;
+
+const createButtonVariantStyles = () =>
+  Object.fromEntries(
+    buttonVariants.map((variant) => {
+      const variantContract = buttonContract.variants[variant];
+
+      return [
+        variant,
+        {
+          backgroundColor: colors[variantContract.backgroundColor],
+          borderColor: colors[variantContract.borderColor],
+        },
+      ];
+    })
+  ) as Record<ButtonVariant, ViewStyle>;
+
+const createTextVariantStyles = () =>
+  Object.fromEntries(
+    buttonVariants.map((variant) => {
+      const variantContract = buttonContract.variants[variant];
+
+      return [
+        variant,
+        {
+          color: colors[variantContract.foregroundColor],
+        },
+      ];
+    })
+  ) as Record<ButtonVariant, TextStyle>;
+
+const buttonSizeStyles = StyleSheet.create(createButtonSizeStyles());
+const textSizeStyles = StyleSheet.create(createTextSizeStyles());
+const buttonVariantStyles = StyleSheet.create(createButtonVariantStyles());
+const textVariantStyles = StyleSheet.create(createTextVariantStyles());

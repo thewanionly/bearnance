@@ -18,6 +18,12 @@ const workspaceTsconfigPaths = [
   fileURLToPath(new URL('../../apps/ui-docs/tsconfig.json', import.meta.url)),
   fileURLToPath(new URL('../../apps/web/tsconfig.json', import.meta.url)),
   fileURLToPath(
+    new URL('../../packages/design-tokens/tsconfig.json', import.meta.url)
+  ),
+  fileURLToPath(
+    new URL('../../packages/ui-core/tsconfig.json', import.meta.url)
+  ),
+  fileURLToPath(
     new URL('../../packages/ui-mobile/tsconfig.json', import.meta.url)
   ),
   fileURLToPath(

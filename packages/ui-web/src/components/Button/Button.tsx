@@ -1,56 +1,60 @@
 import * as React from 'react';
 
 import { cn } from '#lib/utils';
-import { type VariantProps, cva } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import { Slot } from 'radix-ui';
 
+import {
+  type ButtonSize,
+  type ButtonVariant,
+  buttonContract,
+} from '@bearnance/ui-core/button';
+
+const buttonVariantClasses = {
+  destructive:
+    'border-[var(--bearnance-color-red)] bg-[var(--bearnance-color-red)] text-[var(--bearnance-color-white)] hover:bg-[color-mix(in_oklab,var(--bearnance-color-red),var(--bearnance-color-grey-900)_12%)] focus-visible:border-[var(--bearnance-color-red)] focus-visible:ring-[color-mix(in_oklab,var(--bearnance-color-red),transparent_70%)]',
+  primary:
+    'border-[var(--bearnance-color-grey-900)] bg-[var(--bearnance-color-grey-900)] text-[var(--bearnance-color-white)] hover:bg-[color-mix(in_oklab,var(--bearnance-color-grey-900),var(--bearnance-color-white)_12%)] focus-visible:border-[var(--bearnance-color-grey-900)] focus-visible:ring-[color-mix(in_oklab,var(--bearnance-color-grey-900),transparent_70%)]',
+  secondary:
+    'border-[var(--bearnance-color-beige-100)] bg-[var(--bearnance-color-beige-100)] text-[var(--bearnance-color-grey-900)] hover:bg-[color-mix(in_oklab,var(--bearnance-color-beige-100),var(--bearnance-color-grey-900)_8%)] focus-visible:border-[var(--bearnance-color-grey-900)] focus-visible:ring-[color-mix(in_oklab,var(--bearnance-color-grey-900),transparent_70%)]',
+  tertiary:
+    'border-[var(--bearnance-color-white)] bg-[var(--bearnance-color-white)] text-[var(--bearnance-color-grey-500)] hover:text-[var(--bearnance-color-grey-900)] focus-visible:border-[var(--bearnance-color-grey-900)] focus-visible:ring-[color-mix(in_oklab,var(--bearnance-color-grey-900),transparent_70%)]',
+} as const satisfies Record<ButtonVariant, string>;
+
+const buttonSizeClasses = {
+  compact:
+    'min-h-10 gap-[var(--bearnance-spacing-100)] px-[var(--bearnance-spacing-200)] py-[var(--bearnance-spacing-100)] text-[length:var(--bearnance-font-size-text-preset-4)] leading-[var(--bearnance-line-height-text-preset-4)]',
+  default:
+    'min-h-[53px] gap-[var(--bearnance-spacing-100)] px-[var(--bearnance-spacing-200)] py-[var(--bearnance-spacing-200)] text-[length:var(--bearnance-font-size-text-preset-4)] leading-[var(--bearnance-line-height-text-preset-4)]',
+} as const satisfies Record<ButtonSize, string>;
+
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding font-bold whitespace-nowrap transition-all outline-none select-none focus-visible:ring-3 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/80',
-        outline:
-          'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
-        secondary:
-          'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
-        ghost:
-          'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
-        destructive:
-          'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default:
-          'h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        icon: 'size-8',
-        'icon-xs':
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        'icon-sm':
-          'size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
-        'icon-lg': 'size-9',
-      },
+      size: buttonSizeClasses,
+      variant: buttonVariantClasses,
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      size: buttonContract.defaultSize,
+      variant: buttonContract.defaultVariant,
     },
   }
 );
 
+export type ButtonProps = React.ComponentProps<'button'> & {
+  asChild?: boolean;
+  size?: ButtonSize;
+  variant?: ButtonVariant;
+};
+
 function Button({
   className,
-  variant = 'default',
-  size = 'default',
+  variant = buttonContract.defaultVariant,
+  size = buttonContract.defaultSize,
   asChild = false,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button';
 
   return (

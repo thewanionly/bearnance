@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './Button.stories';
 
-const { Default, Disabled, Outline } = composeStories(stories);
+const { Compact, Default, Disabled, Secondary } = composeStories(stories);
 
 describe('Button', () => {
   it('renders children in a button element', () => {
@@ -14,17 +14,18 @@ describe('Button', () => {
 
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute('data-slot', 'button');
-    expect(button).toHaveAttribute('data-variant', 'default');
+    expect(button).toHaveAttribute('data-variant', 'primary');
     expect(button).toHaveAttribute('data-size', 'default');
   });
 
   it('merges variant, size, and custom classes', () => {
-    render(<Outline className="custom-class" size="sm" />);
+    render(<Secondary className="custom-class" size="compact" />);
 
     const button = screen.getByRole('button', { name: 'Start' });
 
-    expect(button).toHaveClass('border-border');
-    expect(button).toHaveClass('h-7');
+    expect(button).toHaveAttribute('data-variant', 'secondary');
+    expect(button).toHaveAttribute('data-size', 'compact');
+    expect(button).toHaveClass('min-h-10');
     expect(button).toHaveClass('custom-class');
   });
 
@@ -54,16 +55,16 @@ describe('Button', () => {
 
   it('supports rendering as a child element', () => {
     render(
-      <Default asChild variant="link">
+      <Compact asChild variant="tertiary">
         <a href="/transactions">Transactions</a>
-      </Default>
+      </Compact>
     );
 
     const link = screen.getByRole('link', { name: 'Transactions' });
 
     expect(link).toHaveAttribute('href', '/transactions');
     expect(link).toHaveAttribute('data-slot', 'button');
-    expect(link).toHaveAttribute('data-variant', 'link');
-    expect(link).toHaveClass('text-primary');
+    expect(link).toHaveAttribute('data-variant', 'tertiary');
+    expect(link).toHaveAttribute('data-size', 'compact');
   });
 });
