@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Component, type ReactNode } from 'react';
 
 import type {
   AccessibilityState,
@@ -33,53 +33,82 @@ export type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
   variant?: ButtonVariant;
 };
 
-export function Button({
-  accessibilityState,
-  children,
-  disabled = false,
-  onPress,
-  size = buttonContract.defaultSize,
-  style,
-  textStyle,
-  variant = buttonContract.defaultVariant,
-  ...props
-}: ButtonProps) {
-  const isDisabled = disabled === true;
-  const resolvedAccessibilityState: AccessibilityState = {
-    ...accessibilityState,
-    disabled: isDisabled,
+type ButtonState = {
+  isPressed: boolean;
+};
+
+export class Button extends Component<ButtonProps, ButtonState> {
+  state: ButtonState = {
+    isPressed: false,
   };
 
-  return (
-    <Pressable
-      accessible
-      accessibilityRole="button"
-      accessibilityState={resolvedAccessibilityState}
-      disabled={isDisabled}
-      onPress={isDisabled ? undefined : onPress}
-      style={({ pressed }) => [
-        styles.base,
-        buttonSizeStyles[size],
-        buttonVariantStyles[variant],
-        pressed && !isDisabled ? styles.pressed : null,
-        isDisabled ? styles.disabled : null,
-        style,
-      ]}
-      {...props}
-    >
-      <Text
-        maxFontSizeMultiplier={1.2}
+  render() {
+    const {
+      accessibilityState,
+      children,
+      disabled = false,
+      onPress,
+      onPressIn,
+      onPressOut,
+      size = buttonContract.defaultSize,
+      style,
+      textStyle,
+      variant = buttonContract.defaultVariant,
+      ...props
+    } = this.props;
+    const isDisabled = disabled === true;
+    const isShowingInteractionState = this.state.isPressed && !isDisabled;
+    const resolvedAccessibilityState: AccessibilityState = {
+      ...accessibilityState,
+      disabled: isDisabled,
+    };
+
+    return (
+      <Pressable
+        accessible
+        accessibilityRole="button"
+        accessibilityState={resolvedAccessibilityState}
+        disabled={isDisabled}
+        onPress={isDisabled ? undefined : onPress}
+        onPressIn={(event) => {
+          if (!isDisabled) {
+            this.setState({ isPressed: true });
+          }
+
+          onPressIn?.(event);
+        }}
+        onPressOut={(event) => {
+          if (!isDisabled) {
+            this.setState({ isPressed: false });
+          }
+
+          onPressOut?.(event);
+        }}
         style={[
-          styles.label,
-          textSizeStyles[size],
-          textVariantStyles[variant],
-          textStyle,
+          styles.base,
+          buttonSizeStyles[size],
+          buttonVariantStyles[variant],
+          isShowingInteractionState ? buttonVariantHoverStyles[variant] : null,
+          isDisabled ? styles.disabled : null,
+          style,
         ]}
+        {...props}
       >
-        {children}
-      </Text>
-    </Pressable>
-  );
+        <Text
+          maxFontSizeMultiplier={1.2}
+          style={[
+            styles.label,
+            textSizeStyles[size],
+            textVariantStyles[variant],
+            isShowingInteractionState ? textVariantHoverStyles[variant] : null,
+            textStyle,
+          ]}
+        >
+          {children}
+        </Text>
+      </Pressable>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -96,9 +125,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: '600',
-  },
-  pressed: {
-    opacity: 0.82,
   },
 });
 
@@ -142,12 +168,31 @@ const createButtonVariantStyles = () =>
   Object.fromEntries(
     buttonVariants.map((variant) => {
       const variantContract = buttonContract.variants[variant];
+      const defaultState = variantContract.states.default;
 
       return [
         variant,
         {
-          backgroundColor: colors[variantContract.backgroundColor],
-          borderColor: colors[variantContract.borderColor],
+          backgroundColor: colors[defaultState.backgroundColor],
+          borderColor: colors[defaultState.borderColor],
+          opacity: defaultState.opacity,
+        },
+      ];
+    })
+  ) as Record<ButtonVariant, ViewStyle>;
+
+const createButtonVariantHoverStyles = () =>
+  Object.fromEntries(
+    buttonVariants.map((variant) => {
+      const variantContract = buttonContract.variants[variant];
+      const hoverState = variantContract.states.hover;
+
+      return [
+        variant,
+        {
+          backgroundColor: colors[hoverState.backgroundColor],
+          borderColor: colors[hoverState.borderColor],
+          opacity: hoverState.opacity,
         },
       ];
     })
@@ -157,11 +202,27 @@ const createTextVariantStyles = () =>
   Object.fromEntries(
     buttonVariants.map((variant) => {
       const variantContract = buttonContract.variants[variant];
+      const defaultState = variantContract.states.default;
 
       return [
         variant,
         {
-          color: colors[variantContract.foregroundColor],
+          color: colors[defaultState.foregroundColor],
+        },
+      ];
+    })
+  ) as Record<ButtonVariant, TextStyle>;
+
+const createTextVariantHoverStyles = () =>
+  Object.fromEntries(
+    buttonVariants.map((variant) => {
+      const variantContract = buttonContract.variants[variant];
+      const hoverState = variantContract.states.hover;
+
+      return [
+        variant,
+        {
+          color: colors[hoverState.foregroundColor],
         },
       ];
     })
@@ -170,4 +231,10 @@ const createTextVariantStyles = () =>
 const buttonSizeStyles = StyleSheet.create(createButtonSizeStyles());
 const textSizeStyles = StyleSheet.create(createTextSizeStyles());
 const buttonVariantStyles = StyleSheet.create(createButtonVariantStyles());
+const buttonVariantHoverStyles = StyleSheet.create(
+  createButtonVariantHoverStyles()
+);
 const textVariantStyles = StyleSheet.create(createTextVariantStyles());
+const textVariantHoverStyles = StyleSheet.create(
+  createTextVariantHoverStyles()
+);

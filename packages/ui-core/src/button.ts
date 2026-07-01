@@ -23,6 +23,14 @@ type ButtonTone = {
   backgroundColor: ColorToken;
   borderColor: ColorToken;
   foregroundColor: ColorToken;
+  opacity: number;
+};
+
+type ButtonVariantContract = {
+  states: {
+    default: ButtonTone;
+    hover: ButtonTone;
+  };
 };
 
 type ButtonSizeContract = {
@@ -51,29 +59,73 @@ export const buttonContract = {
   },
   variants: {
     destructive: {
-      backgroundColor: 'red',
-      borderColor: 'red',
-      foregroundColor: 'white',
+      states: {
+        default: {
+          backgroundColor: 'red',
+          borderColor: 'red',
+          foregroundColor: 'white',
+          opacity: 1,
+        },
+        hover: {
+          backgroundColor: 'red',
+          borderColor: 'red',
+          foregroundColor: 'white',
+          opacity: 0.86,
+        },
+      },
     },
     primary: {
-      backgroundColor: 'grey900',
-      borderColor: 'grey900',
-      foregroundColor: 'white',
+      states: {
+        default: {
+          backgroundColor: 'grey900',
+          borderColor: 'grey900',
+          foregroundColor: 'white',
+          opacity: 1,
+        },
+        hover: {
+          backgroundColor: 'grey500',
+          borderColor: 'grey500',
+          foregroundColor: 'white',
+          opacity: 1,
+        },
+      },
     },
     secondary: {
-      backgroundColor: 'beige100',
-      borderColor: 'beige100',
-      foregroundColor: 'grey900',
+      states: {
+        default: {
+          backgroundColor: 'beige100',
+          borderColor: 'beige100',
+          foregroundColor: 'grey900',
+          opacity: 1,
+        },
+        hover: {
+          backgroundColor: 'white',
+          borderColor: 'beige500',
+          foregroundColor: 'grey900',
+          opacity: 1,
+        },
+      },
     },
     tertiary: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      foregroundColor: 'grey500',
+      states: {
+        default: {
+          backgroundColor: 'white',
+          borderColor: 'white',
+          foregroundColor: 'grey500',
+          opacity: 1,
+        },
+        hover: {
+          backgroundColor: 'white',
+          borderColor: 'white',
+          foregroundColor: 'grey900',
+          opacity: 1,
+        },
+      },
     },
   },
 } as const satisfies {
   defaultSize: ButtonSize;
   defaultVariant: ButtonVariant;
   sizes: Record<ButtonSize, ButtonSizeContract>;
-  variants: Record<ButtonVariant, ButtonTone>;
+  variants: Record<ButtonVariant, ButtonVariantContract>;
 };

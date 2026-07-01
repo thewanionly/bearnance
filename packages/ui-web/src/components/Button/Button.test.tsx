@@ -1,3 +1,4 @@
+import { cssColorVariable } from '@bearnance/design-tokens/css';
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -27,6 +28,19 @@ describe('Button', () => {
     expect(button).toHaveAttribute('data-size', 'compact');
     expect(button).toHaveClass('min-h-10');
     expect(button).toHaveClass('custom-class');
+  });
+
+  it('applies token-backed default and hover tones', () => {
+    render(<Default />);
+
+    const button = screen.getByRole('button', { name: 'Start' });
+
+    expect(button.style.getPropertyValue('--bearnance-button-background')).toBe(
+      cssColorVariable('grey900')
+    );
+    expect(
+      button.style.getPropertyValue('--bearnance-button-hover-background')
+    ).toBe(cssColorVariable('grey500'));
   });
 
   it('calls onClick when clicked', async () => {

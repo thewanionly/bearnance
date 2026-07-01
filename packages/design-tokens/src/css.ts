@@ -1,4 +1,4 @@
-import { colors } from './colors';
+import { type ColorToken, colors } from './colors';
 import { shadows } from './effects';
 import { spacing } from './spacing';
 import {
@@ -70,3 +70,31 @@ export const cssVariables = {
 export type CSSVariableName = keyof typeof cssVariables;
 
 export const cssVariable = (name: CSSVariableName) => `var(${name})`;
+
+export const colorCssVariables = {
+  armyGreen: '--bearnance-color-army-green',
+  beige100: '--bearnance-color-beige-100',
+  beige500: '--bearnance-color-beige-500',
+  blue: '--bearnance-color-blue',
+  brown: '--bearnance-color-brown',
+  cyan: '--bearnance-color-cyan',
+  gold: '--bearnance-color-gold',
+  green: '--bearnance-color-green',
+  grey100: '--bearnance-color-grey-100',
+  grey300: '--bearnance-color-grey-300',
+  grey500: '--bearnance-color-grey-500',
+  grey900: '--bearnance-color-grey-900',
+  magenta: '--bearnance-color-magenta',
+  navy: '--bearnance-color-navy',
+  navyGrey: '--bearnance-color-navy-grey',
+  orange: '--bearnance-color-orange',
+  pink: '--bearnance-color-pink',
+  purple: '--bearnance-color-purple',
+  red: '--bearnance-color-red',
+  turquoise: '--bearnance-color-turquoise',
+  white: '--bearnance-color-white',
+  yellow: '--bearnance-color-yellow',
+} as const satisfies Record<ColorToken, CSSVariableName>;
+
+export const cssColorVariable = (name: ColorToken) =>
+  cssVariable(colorCssVariables[name]);

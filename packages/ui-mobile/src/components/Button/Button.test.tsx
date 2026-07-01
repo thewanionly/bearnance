@@ -1,10 +1,11 @@
+import { colors } from '@bearnance/design-tokens/colors';
 import { describe, expect, it, jest } from '@jest/globals';
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { act, render, screen, userEvent } from '@testing-library/react-native';
 
 import * as stories from './Button.stories';
 
-const { Default, Disabled } = composeStories(stories);
+const { Default, Disabled, Tertiary } = composeStories(stories);
 
 describe('Button', () => {
   it('renders children', async () => {
@@ -43,5 +44,21 @@ describe('Button', () => {
     expect(screen.getByRole('button').props.accessibilityState).toMatchObject({
       disabled: true,
     });
+  });
+
+  it('applies the hover foreground color while pressed', async () => {
+    await render(<Tertiary />);
+
+    await act(async () => {
+      screen.getByRole('button').props.onPressIn();
+    });
+
+    expect(screen.getByText('Start').props.style).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          color: colors.grey900,
+        }),
+      ])
+    );
   });
 });
