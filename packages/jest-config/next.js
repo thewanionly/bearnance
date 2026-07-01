@@ -16,6 +16,7 @@ export const createNextJsConfig = ({ dir = './', customConfig = {} } = {}) => {
 
   return createJestConfig({
     ...baseConfig,
+    coverageProvider: 'v8',
     testEnvironment: 'jsdom',
     ...customConfig,
   });

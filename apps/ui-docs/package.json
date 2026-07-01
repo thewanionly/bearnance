@@ -9,6 +9,9 @@
     "lint": "eslint . --max-warnings 0",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:watch": "jest --watch",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,27 +24,30 @@
   },
   "devDependencies": {
     "@bearnance/eslint-config": "workspace:*",
+    "@bearnance/jest-config": "workspace:*",
     "@bearnance/prettier-config": "workspace:*",
     "@bearnance/typescript-config": "workspace:*",
     "@chromatic-com/storybook": "^5.2.1",
     "@storybook/addon-a11y": "^10.4.6",
     "@storybook/addon-docs": "^10.4.6",
-    "@storybook/addon-vitest": "^10.4.6",
     "@storybook/react-vite": "^10.4.6",
     "@tailwindcss/vite": "^4.3.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
-    "@vitest/browser-playwright": "^4.1.9",
-    "@vitest/coverage-v8": "^4.1.9",
     "eslint": "^10.6.0",
-    "playwright": "^1.61.1",
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
     "prettier": "^3.7.4",
     "storybook": "^10.4.6",
     "tailwindcss": "^4.3.1",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "6.0.3",
-    "vite": "^8.1.0",
-    "vitest": "^4.1.9"
+    "vite": "^8.1.0"
   }
 }

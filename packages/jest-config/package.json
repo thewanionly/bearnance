@@ -4,20 +4,41 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./base": "./base.js",
+    "./base": {
+      "types": "./base.d.ts",
+      "import": "./base.js",
+      "default": "./base.js"
+    },
     "./mocks/file": "./mocks/file.cjs",
     "./mocks/react-native": "./mocks/react-native.tsx",
     "./mocks/style": "./mocks/style.cjs",
-    "./next-js": "./next.js",
-    "./node": "./node.js",
-    "./react": "./react.js",
-    "./react-native": "./react-native.js"
+    "./next-js": {
+      "types": "./next.d.ts",
+      "import": "./next.js",
+      "default": "./next.js"
+    },
+    "./node": {
+      "types": "./node.d.ts",
+      "import": "./node.js",
+      "default": "./node.js"
+    },
+    "./react": {
+      "types": "./react.d.ts",
+      "import": "./react.js",
+      "default": "./react.js"
+    },
+    "./react-native": {
+      "types": "./react-native.d.ts",
+      "import": "./react-native.js",
+      "default": "./react-native.js"
+    }
   },
   "peerDependencies": {
     "@react-native/babel-preset": ">=0.78.0",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0 || ^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
+    "jest-environment-node": "^29.7.0 || ^30.0.0",
     "react": ">=19.0.0",
     "ts-jest": "^29.4.0"
   },
@@ -29,6 +50,9 @@
       "optional": true
     },
     "jest-environment-jsdom": {
+      "optional": true
+    },
+    "jest-environment-node": {
       "optional": true
     },
     "react": {

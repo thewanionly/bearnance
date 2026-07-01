@@ -6,7 +6,8 @@
     "strictNullChecks": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "resolvePackageJsonImports": true
+    "resolvePackageJsonImports": true,
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

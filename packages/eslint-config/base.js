@@ -1,5 +1,6 @@
 import eslintConfigPrettier from 'eslint-config-prettier';
 import boundaries from 'eslint-plugin-boundaries';
+import pluginJest from 'eslint-plugin-jest';
 import turboPlugin from 'eslint-plugin-turbo';
 import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
@@ -30,6 +31,7 @@ const appImportPatterns = [
   '@bearnance/ui-docs/**',
   '@bearnance/web/**',
 ];
+export const testFilePatterns = ['**/*.{test,spec}.{js,jsx,ts,tsx,mjs,cjs}'];
 
 /**
  * A shared ESLint configuration for the repository.
@@ -49,7 +51,11 @@ export const config = [
     },
   },
   {
-    ignores: ['dist/**'],
+    ignores: ['coverage/**', 'dist/**'],
+  },
+  {
+    ...pluginJest.configs['flat/recommended'],
+    files: testFilePatterns,
   },
   {
     plugins: {

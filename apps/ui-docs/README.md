@@ -41,6 +41,8 @@ Run these from the repository root unless noted otherwise.
 | `pnpm --filter ui-docs dev`             | Start Storybook on port 6006.          |
 | `pnpm --filter ui-docs build:storybook` | Build static Storybook output.         |
 | `pnpm --filter ui-docs lint`            | Run ESLint with zero warnings allowed. |
+| `pnpm --filter ui-docs test`            | Run Jest tests.                        |
+| `pnpm --filter ui-docs test:cov`        | Run Jest tests with coverage.          |
 | `pnpm --filter ui-docs check-types`     | Run `tsc --noEmit`.                    |
 | `pnpm --filter ui-docs format:check`    | Check formatting for this app.         |
 | `pnpm --filter ui-docs format:fix`      | Format this app.                       |
@@ -50,12 +52,14 @@ Run these from the repository root unless noted otherwise.
 ```text
 apps/ui-docs
 |-- .storybook/main.ts
+|-- .storybook/preview.test.tsx
 |-- .storybook/preview.tsx
 |-- eslint.config.mjs
+|-- jest.config.ts
+|-- jest.setup.ts
 |-- prettier.config.mjs
 |-- tsconfig.json
-|-- turbo.json
-`-- vite.config.ts
+`-- turbo.json
 ```
 
 ## Development Notes

@@ -11,6 +11,10 @@
     "format:fix": "prettier --write .",
     "lint-staged": "lint-staged",
     "prepare": "husky",
+    "test": "turbo run test",
+    "test:cov": "turbo run test:cov",
+    "test:e2e": "turbo run test:e2e",
+    "test:watch": "turbo run test:watch",
     "check-types": "turbo run check-types"
   },
   "config": {

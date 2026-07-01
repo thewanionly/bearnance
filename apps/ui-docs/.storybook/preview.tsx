@@ -33,7 +33,7 @@ const preview: Preview = {
       }
 
       return (
-        <div style={mobileCanvasStyle}>
+        <div data-testid="mobile-canvas" style={mobileCanvasStyle}>
           <div style={mobileFrameStyle}>
             <div style={mobileContentStyle}>
               <Story />

@@ -17,7 +17,6 @@ const config: StorybookConfig = {
   ],
   addons: [
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath('@storybook/addon-vitest'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
   ],
@@ -36,8 +35,10 @@ const config: StorybookConfig = {
   },
   async viteFinal(config) {
     const { mergeConfig } = await import('vite');
+    const tailwindcss = (await import('@tailwindcss/vite')).default;
 
     return mergeConfig(config, {
+      plugins: [tailwindcss()],
       resolve: {
         alias: [{ find: /^react-native$/, replacement: 'react-native-web' }],
         extensions: [

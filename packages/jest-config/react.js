@@ -22,7 +22,20 @@ export const config = {
         useESM: true,
       },
     ],
+    '^.+\\.[cm]?jsx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          allowJs: true,
+        },
+        useESM: true,
+      },
+    ],
   },
+  transformIgnorePatterns: [
+    '/node_modules/.pnpm/(?!(?:@storybook\\+|storybook@))',
+    '/node_modules/(?!\\.pnpm|@storybook/|storybook/)',
+  ],
 };
 
 export default config;

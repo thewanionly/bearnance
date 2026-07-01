@@ -1,12 +1,13 @@
 import eslintConfigPrettier from 'eslint-config-prettier';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginTestingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 import eslintReact from '@eslint-react/eslint-plugin';
 import js from '@eslint/js';
 
-import { config as baseConfig } from './base.js';
+import { config as baseConfig, testFilePatterns } from './base.js';
 
 /**
  * A custom ESLint configuration for libraries that use React.
@@ -33,6 +34,10 @@ export const config = [
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
     },
+  },
+  {
+    ...pluginTestingLibrary.configs['flat/react'],
+    files: testFilePatterns,
   },
   eslintReact.configs['disable-conflict-eslint-plugin-react-hooks'],
 ];

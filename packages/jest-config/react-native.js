@@ -20,13 +20,17 @@ export const config = {
   testEnvironment: 'node',
   transform: {
     ...(baseConfig.transform ?? {}),
-    '^.+\\.[jt]sx?$': [
+    '^.+\\.[cm]?[jt]sx?$': [
       'babel-jest',
       {
         presets: ['module:@react-native/babel-preset'],
       },
     ],
   },
+  transformIgnorePatterns: [
+    '/node_modules/.pnpm/(?!(?:@storybook\\+|storybook@))',
+    '/node_modules/(?!\\.pnpm|@storybook/|storybook/)',
+  ],
 };
 
 export default config;

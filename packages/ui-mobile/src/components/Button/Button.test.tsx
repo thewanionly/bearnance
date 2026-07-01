@@ -1,46 +1,46 @@
 import { describe, expect, it, jest } from '@jest/globals';
-import { fireEvent, render } from '@testing-library/react-native';
+import { composeStories } from '@storybook/react-vite';
+import { render, screen, userEvent } from '@testing-library/react-native';
 
-import { Button } from './Button';
+import * as stories from './Button.stories';
+
+const { Default, Disabled } = composeStories(stories);
 
 describe('Button', () => {
   it('renders children', async () => {
-    const { getByText } = await render(<Button>Start</Button>);
+    await render(<Default />);
 
-    expect(getByText('Start')).toBeTruthy();
+    expect(screen.getByText('Start')).toBeTruthy();
   });
 
   it('calls onPress when pressed', async () => {
+    const user = userEvent.setup();
     const onPress = jest.fn();
-    const { getByRole } = await render(
-      <Button onPress={onPress}>Start</Button>
-    );
+    await render(<Default onPress={onPress} />);
 
-    fireEvent.press(getByRole('button'));
+    await user.press(screen.getByRole('button'));
 
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
   it('does not call onPress when disabled', async () => {
+    const user = userEvent.setup();
     const onPress = jest.fn();
-    const { getByRole } = await render(
-      <Button disabled onPress={onPress}>
-        Start
-      </Button>
-    );
+    await render(<Disabled onPress={onPress} />);
 
-    const button = getByRole('button');
+    const button = screen.getByRole('button');
 
     expect(button.props.onPress).toBeUndefined();
-    button.props.onPress?.();
+
+    await user.press(button);
 
     expect(onPress).not.toHaveBeenCalled();
   });
 
   it('exposes disabled accessibility state', async () => {
-    const { getByRole } = await render(<Button disabled>Start</Button>);
+    await render(<Disabled />);
 
-    expect(getByRole('button').props.accessibilityState).toMatchObject({
+    expect(screen.getByRole('button').props.accessibilityState).toMatchObject({
       disabled: true,
     });
   });

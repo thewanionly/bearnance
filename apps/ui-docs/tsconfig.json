@@ -5,7 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "noEmit": true,
-    "types": ["node", "vite/client", "vitest/config"]
+    "types": ["node", "vite/client", "jest", "@testing-library/jest-dom"]
   },
   "include": [
     ".storybook/**/*.ts",
@@ -14,8 +14,15 @@
     "../../packages/ui-mobile/src/**/*.tsx",
     "../../packages/ui-web/src/**/*.ts",
     "../../packages/ui-web/src/**/*.tsx",
-    "vite.config.ts",
-    "vitest.shims.d.ts"
+    "jest.config.ts",
+    "jest.setup.ts"
   ],
-  "exclude": ["node_modules", "storybook-static"]
+  "exclude": [
+    "node_modules",
+    "storybook-static",
+    "../../packages/*/src/**/*.spec.ts",
+    "../../packages/*/src/**/*.spec.tsx",
+    "../../packages/*/src/**/*.test.ts",
+    "../../packages/*/src/**/*.test.tsx"
+  ]
 }
