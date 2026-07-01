@@ -1,8 +1,57 @@
+import fs from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
+const codeFileExtensions = 'cjs,js,jsx,mjs,ts,tsx';
+const workspaceRoots = ['apps', 'packages'];
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const getLintableWorkspaces = () =>
+  workspaceRoots.flatMap((workspaceRoot) => {
+    const workspaceRootPath = path.join(repoRoot, workspaceRoot);
+
+    if (!fs.existsSync(workspaceRootPath)) {
+      return [];
+    }
+
+    return fs
+      .readdirSync(workspaceRootPath, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .flatMap((entry) => {
+        const workspacePath = `${workspaceRoot}/${entry.name}`;
+        const packageJsonPath = path.join(
+          repoRoot,
+          workspacePath,
+          'package.json'
+        );
+
+        if (!fs.existsSync(packageJsonPath)) {
+          return [];
+        }
+
+        const packageJson = JSON.parse(
+          fs.readFileSync(packageJsonPath, 'utf8')
+        );
+
+        if (!packageJson.name || !packageJson.scripts?.lint) {
+          return [];
+        }
+
+        return [{ filter: packageJson.name, workspacePath }];
+      });
+  });
+
+const lintableWorkspaces = getLintableWorkspaces();
 const lintedCodeFilePattern =
-  /^(apps\/api|apps\/ui-docs|packages\/ui-mobile|packages\/ui-web)\/.*\.(cjs|js|jsx|mjs|ts|tsx)$/;
+  lintableWorkspaces.length > 0
+    ? new RegExp(
+        `^(?:${lintableWorkspaces
+          .map(({ workspacePath }) => escapeRegExp(workspacePath))
+          .join('|')})/.*\\.(?:${codeFileExtensions.replaceAll(',', '|')})$`
+      )
+    : /$^/;
 
 const toAbsoluteFilePath = (file) =>
   path.isAbsolute(file) ? file : path.resolve(file);
@@ -37,6 +86,17 @@ const lintWorkspace = (filter, workspacePath, files) => {
   return `pnpm --filter ${filter} exec eslint --fix --max-warnings 0 ${workspaceFiles.join(' ')}`;
 };
 
+const lintWorkspaceFiles = (filter, workspacePath) => (files) => [
+  ...commands(lintWorkspace(filter, workspacePath, files), formatFiles(files)),
+];
+
+const workspaceTasks = Object.fromEntries(
+  lintableWorkspaces.map(({ filter, workspacePath }) => [
+    `${workspacePath}/**/*.{${codeFileExtensions}}`,
+    lintWorkspaceFiles(filter, workspacePath),
+  ])
+);
+
 export default {
   '*': (files) =>
     commands(
@@ -46,25 +106,5 @@ export default {
         )
       )
     ),
-  'apps/api/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(lintWorkspace('api', 'apps/api', files), formatFiles(files)),
-  ],
-  'apps/ui-docs/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(
-      lintWorkspace('ui-docs', 'apps/ui-docs', files),
-      formatFiles(files)
-    ),
-  ],
-  'packages/ui-mobile/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(
-      lintWorkspace('@bearnance/ui-mobile', 'packages/ui-mobile', files),
-      formatFiles(files)
-    ),
-  ],
-  'packages/ui-web/**/*.{cjs,js,jsx,mjs,ts,tsx}': (files) => [
-    ...commands(
-      lintWorkspace('@bearnance/ui-web', 'packages/ui-web', files),
-      formatFiles(files)
-    ),
-  ],
+  ...workspaceTasks,
 };
