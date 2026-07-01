@@ -13,10 +13,12 @@
     "./typography": "./src/typography.ts"
   },
   "scripts": {
+    "generate:css": "node --experimental-strip-types scripts/generate-css.ts",
+    "check:generated": "node --experimental-strip-types scripts/generate-css.ts --check",
     "lint": "eslint . --max-warnings 0",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "check-types": "tsc --noEmit"
+    "check-types": "pnpm check:generated && tsc --noEmit"
   },
   "devDependencies": {
     "@bearnance/eslint-config": "workspace:*",

@@ -1,4 +1,3 @@
-import { cssColorVariable } from '@bearnance/design-tokens/css';
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -27,20 +26,20 @@ describe('Button', () => {
     expect(button).toHaveAttribute('data-variant', 'secondary');
     expect(button).toHaveAttribute('data-size', 'compact');
     expect(button).toHaveClass('min-h-10');
+    expect(button).toHaveClass('text-preset-4');
     expect(button).toHaveClass('custom-class');
   });
 
-  it('applies token-backed default and hover tones', () => {
+  it('applies token-backed default and hover tone classes', () => {
     render(<Default />);
 
     const button = screen.getByRole('button', { name: 'Start' });
 
-    expect(button.style.getPropertyValue('--bearnance-button-background')).toBe(
-      cssColorVariable('grey900')
-    );
-    expect(
-      button.style.getPropertyValue('--bearnance-button-hover-background')
-    ).toBe(cssColorVariable('grey500'));
+    expect(button).toHaveClass('border-grey-900');
+    expect(button).toHaveClass('bg-grey-900');
+    expect(button).toHaveClass('text-white');
+    expect(button).toHaveClass('hover:border-grey-500');
+    expect(button).toHaveClass('hover:bg-grey-500');
   });
 
   it('calls onClick when clicked', async () => {
