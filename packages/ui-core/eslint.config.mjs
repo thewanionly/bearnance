@@ -1,4 +1,4 @@
 import { config } from '@bearnance/eslint-config/base';
 
 /** @type {import("eslint").Linter.Config[]} */
-export default config;
+export default [...config, { ignores: ['src/brand-icons.generated.ts'] }];

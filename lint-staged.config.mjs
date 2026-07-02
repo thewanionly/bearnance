@@ -83,7 +83,7 @@ const lintWorkspace = (filter, workspacePath, files) => {
     return quote(path.relative(workspaceRoot, filePath));
   });
 
-  return `pnpm --filter ${filter} exec eslint --fix --max-warnings 0 ${workspaceFiles.join(' ')}`;
+  return `pnpm --filter ${filter} exec eslint --fix --max-warnings 0 --no-warn-ignored ${workspaceFiles.join(' ')}`;
 };
 
 const lintWorkspaceFiles = (filter, workspacePath) => (files) => [

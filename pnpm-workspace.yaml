@@ -2,6 +2,15 @@ packages:
   - 'apps/*'
   - 'packages/*'
 verifyDepsBeforeRun: false
+# Dedupe the React type packages to single versions. Multiple copies of
+# `@types/react` / `csstype` make structural types (`CSSProperties`, `Ref`,
+# `VoidOrUndefinedOnly`) incompatible across package boundaries, which breaks
+# type-checking of shared components (e.g. the generated SVG icons consumed by
+# apps/web). Pinned to the newest versions already present in the tree.
+overrides:
+  csstype: 3.2.3
+  '@types/react': 19.2.17
+  '@types/react-dom': 19.2.3
 allowBuilds:
   '@prisma/engines': true
   esbuild: true

@@ -24,11 +24,13 @@
   },
   "peerDependencies": {
     "react": "^19.2.3",
-    "react-native": ">=0.78"
+    "react-native": ">=0.78",
+    "react-native-svg": "^15.0.0"
   },
   "dependencies": {
     "@bearnance/design-tokens": "workspace:*",
-    "@bearnance/ui-core": "workspace:*"
+    "@bearnance/ui-core": "workspace:*",
+    "lucide-react-native": "^1.22.0"
   },
   "devDependencies": {
     "@bearnance/eslint-config": "workspace:*",
@@ -47,6 +49,7 @@
     "prettier": "^3.7.4",
     "react": "^19.2.7",
     "react-native": "0.86.0",
+    "react-native-svg": "^15.15.0",
     "test-renderer": "^1.2.0",
     "ts-node": "^10.9.2",
     "typescript": "6.0.3"

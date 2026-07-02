@@ -6,6 +6,7 @@
   "exports": {
     "./avatar": "./src/avatar.ts",
     "./button": "./src/button.ts",
+    "./icon": "./src/icon.ts",
     "./input": "./src/input.ts",
     "./layout": "./src/layout.ts",
     "./list-item": "./src/list-item.ts",
@@ -13,10 +14,12 @@
     "./navigation": "./src/navigation.ts"
   },
   "scripts": {
+    "gen:icons": "node --experimental-strip-types scripts/generate-icons.ts",
+    "check:icons": "node --experimental-strip-types scripts/generate-icons.ts --check",
     "lint": "eslint . --max-warnings 0",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "check-types": "tsc --noEmit"
+    "check-types": "pnpm check:icons && tsc --noEmit"
   },
   "dependencies": {
     "@bearnance/design-tokens": "workspace:*"
@@ -25,6 +28,9 @@
     "@bearnance/eslint-config": "workspace:*",
     "@bearnance/prettier-config": "workspace:*",
     "@bearnance/typescript-config": "workspace:*",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@types/node": "^22.15.3",
     "eslint": "^10.6.0",
     "prettier": "^3.7.4",

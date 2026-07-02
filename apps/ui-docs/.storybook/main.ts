@@ -55,7 +55,28 @@ const config: StorybookConfig = {
         dedupe: ['react', 'react-dom', 'react-native', 'react-native-web'],
       },
       optimizeDeps: {
-        include: ['react-native-web'],
+        include: [
+          'react-native-web',
+          'react-native-svg',
+          'lucide-react-native',
+        ],
+        // The dev-mode dependency optimizer (esbuild) must prefer the `.web.js`
+        // variants that `react-native-svg` ships; otherwise it pulls the native
+        // entry, which imports React Native's Flow-typed source and fails to
+        // parse. Mirror the `resolve.extensions` order above.
+        esbuildOptions: {
+          resolveExtensions: [
+            '.web.tsx',
+            '.web.ts',
+            '.web.jsx',
+            '.web.js',
+            '.tsx',
+            '.ts',
+            '.jsx',
+            '.js',
+            '.json',
+          ],
+        },
       },
     });
   },
