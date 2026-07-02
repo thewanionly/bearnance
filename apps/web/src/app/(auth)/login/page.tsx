@@ -4,16 +4,22 @@ import Link from 'next/link';
 
 import { Button } from '@bearnance/ui-web/components/Button';
 
+import { AuthCard } from '../_components/AuthCard';
+
 export default function LogInPage(): ReactElement {
   return (
-    <div>
-      <h1>Log In</h1>
-      <Button asChild>
-        <Link href="/?logged-in=true">Login</Link>
-      </Button>
-      <Button asChild variant="secondary">
-        <Link href="/signup">Sign Up</Link>
-      </Button>
+    <div className="flex flex-1 flex-col justify-center">
+      <AuthCard title="Login">
+        <Button asChild className="mb-8 w-full">
+          <Link href="/?logged-in=true">Login</Link>
+        </Button>
+        <p className="text-grey-500 text-preset-4 text-center">
+          Need to create an account?{' '}
+          <Link href="/signup" className="text-grey-900 font-bold underline">
+            Sign Up
+          </Link>
+        </p>
+      </AuthCard>
     </div>
   );
 }
