@@ -8,6 +8,7 @@
     "./colors": "./src/colors.ts",
     "./css": "./src/css.ts",
     "./effects": "./src/effects.ts",
+    "./fonts.css": "./src/fonts.css",
     "./spacing": "./src/spacing.ts",
     "./theme.css": "./src/theme.css",
     "./typography": "./src/typography.ts"
@@ -28,5 +29,8 @@
     "eslint": "^10.6.0",
     "prettier": "^3.7.4",
     "typescript": "6.0.3"
+  },
+  "dependencies": {
+    "@fontsource-variable/public-sans": "^5.2.7"
   }
 }

@@ -1,5 +1,5 @@
 export const fontFamilies = {
-  sans: 'Public Sans',
+  sans: 'Public Sans Variable',
 } as const;
 
 export type FontFamilyToken = keyof typeof fontFamilies;

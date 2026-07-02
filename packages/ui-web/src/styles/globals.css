@@ -5,3 +5,9 @@
 @import '@bearnance/design-tokens/theme.css';
 
 @source '../';
+
+@layer base {
+  body {
+    font-family: var(--bearnance-font-family-sans);
+  }
+}

@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 
+import '@bearnance/design-tokens/fonts.css';
 import '@bearnance/ui-web/globals.css';
 import type { Preview } from '@storybook/react-vite';
 

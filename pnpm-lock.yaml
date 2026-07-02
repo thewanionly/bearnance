@@ -126,6 +126,9 @@ importers:
 
   apps/ui-docs:
     dependencies:
+      '@bearnance/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
       '@bearnance/ui-mobile':
         specifier: workspace:*
         version: link:../../packages/ui-mobile
@@ -229,9 +232,12 @@ importers:
       '@bearnance/ui-web':
         specifier: workspace:*
         version: link:../../packages/ui-web
+      '@fontsource-variable/public-sans':
+        specifier: ^5.2.7
+        version: 5.2.7
       next:
         specifier: 16.2.9
-        version: 16.2.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -298,6 +304,10 @@ importers:
         version: 6.0.3
 
   packages/design-tokens:
+    dependencies:
+      '@fontsource-variable/public-sans':
+        specifier: ^5.2.7
+        version: 5.2.7
     devDependencies:
       '@bearnance/eslint-config':
         specifier: workspace:*
@@ -1459,6 +1469,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@fontsource-variable/public-sans@5.2.7':
+    resolution: {integrity: sha512-4mvade2J3slKkvwRkS+p8T3szet/0vhWoSnuUJTVU81Uo2pRpSZY/Y8bSLRqpSwzIPxjVmRJ53oq6JKP/l/PSg==}
 
   '@hono/node-server@1.19.14':
     resolution: {integrity: sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==}
@@ -9493,6 +9506,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
+  '@fontsource-variable/public-sans@5.2.7': {}
+
   '@hono/node-server@1.19.14(hono@4.12.27)':
     dependencies:
       hono: 4.12.27
@@ -16113,7 +16128,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@16.2.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@next/env': 16.2.9
       '@swc/helpers': 0.5.15
@@ -16122,7 +16137,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      styled-jsx: 5.1.6(react@19.2.4)
+      styled-jsx: 5.1.6(@babel/core@7.29.7)(react@19.2.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.2.9
       '@next/swc-darwin-x64': 16.2.9
@@ -17441,10 +17456,12 @@ snapshots:
     dependencies:
       '@tokenizer/token': 0.3.0
 
-  styled-jsx@5.1.6(react@19.2.4):
+  styled-jsx@5.1.6(@babel/core@7.29.7)(react@19.2.4):
     dependencies:
       client-only: 0.0.1
       react: 19.2.4
+    optionalDependencies:
+      '@babel/core': 7.29.7
 
   styleq@0.1.3: {}
 
