@@ -1,0 +1,54 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// App-local mirror of a Supabase-authenticated user. `id` is the Supabase
+// auth user's UUID (JWT `sub` claim), not Prisma-generated — identity is
+// owned by Supabase Auth, not this schema.
+model Profile {
+  id        String   @id
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wallet       Wallet?
+  transactions Transaction[]
+}
+
+model Wallet {
+  id           String   @id @default(cuid())
+  profileId    String   @unique
+  balanceMinor BigInt   @default(0)
+  currency     String   @default("PHP")
+  updatedAt    DateTime @updatedAt
+
+  profile Profile @relation(fields: [profileId], references: [id])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+// Append-only ledger entry. Never updated or deleted by the service layer.
+model Transaction {
+  id                String          @id @default(cuid())
+  profileId         String
+  type              TransactionType
+  amountMinor       BigInt
+  currency          String
+  balanceAfterMinor BigInt
+  description       String?
+  createdAt         DateTime        @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id])
+
+  @@index([profileId, createdAt])
+}
