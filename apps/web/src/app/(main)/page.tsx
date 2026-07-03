@@ -15,8 +15,8 @@ export default async function HomePage({
   }
 
   return (
-    <>
-      <h1 className="text-grey-900 text-preset-1 mt-4 font-bold">Overview</h1>
-    </>
+    <div>
+      <h1 className="text-grey-900 text-preset-1 font-bold">Overview</h1>
+    </div>
   );
 }
