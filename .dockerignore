@@ -1,0 +1,42 @@
+# Build context is the repo root for both apps/web/Dockerfile and
+# apps/api/Dockerfile. Keep the context small and avoid leaking host artifacts
+# (esp. host-built node_modules with the wrong platform binaries).
+
+# Dependencies
+**/node_modules
+
+# Build outputs
+**/.next
+**/dist
+**/out
+**/build
+**/storybook-static
+**/*.tsbuildinfo
+
+# Turbo / caches
+**/.turbo
+**/coverage
+**/.swc
+
+# Env & secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Git & VCS
+.git
+.gitignore
+
+# Editor / OS
+**/.vscode
+**/.idea
+**/.DS_Store
+
+# Docker & CI (not needed inside the image)
+**/Dockerfile
+**/.dockerignore
+docker-compose*.yml
+.github
+
+# Misc
+**/*.log

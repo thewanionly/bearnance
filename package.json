@@ -6,6 +6,8 @@
     "commitlint": "commitlint",
     "cz": "cz",
     "dev": "turbo run dev",
+    "dev:docker": "docker compose -f docker-compose.dev.yml up",
+    "dev:docker:build": "docker compose -f docker-compose.dev.yml build",
     "lint": "turbo run lint --continue",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",

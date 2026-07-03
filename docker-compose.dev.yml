@@ -1,0 +1,93 @@
+# Local development in Docker (the "run Docker instead of pnpm dev" path).
+#
+#   docker compose -f docker-compose.dev.yml up        # web + api + postgres
+#   docker compose -f docker-compose.dev.yml up web     # just the web app
+#
+# Source is bind-mounted for hot reload. Every node_modules and build-output dir
+# is overlaid with a named volume so the container's Linux-built dependencies are
+# NOT shadowed by the host's (macOS) install. After changing dependencies, rebuild
+# the images: docker compose -f docker-compose.dev.yml build.
+#
+# Native pnpm dev (pnpm --filter web dev) remains the faster fallback.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: dev
+    command: pnpm --filter web dev
+    ports:
+      - '3000:3000'
+    environment:
+      # Reliable Next.js Fast Refresh over bind mounts on macOS/Windows.
+      WATCHPACK_POLLING: 'true'
+    volumes:
+      - .:/app
+      # Overlay node_modules (container-built) so host binaries don't leak in.
+      - web_root_node_modules:/app/node_modules
+      - web_app_node_modules:/app/apps/web/node_modules
+      - ui_web_node_modules:/app/packages/ui-web/node_modules
+      - ui_core_node_modules:/app/packages/ui-core/node_modules
+      - design_tokens_node_modules:/app/packages/design-tokens/node_modules
+      # Build output stays container-local.
+      - web_next:/app/apps/web/.next
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: dev
+    command: pnpm --filter api dev
+    ports:
+      - '3002:3002'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: '3002'
+      # Point at the compose Postgres (overrides any bind-mounted apps/api/.env,
+      # since process.env wins over the dotenv file).
+      DATABASE_URL: postgresql://bearnance:bearnance@postgres:5432/bearnance
+      DIRECT_URL: postgresql://bearnance:bearnance@postgres:5432/bearnance
+      WEB_APP_URL: http://localhost:3000
+      # Placeholder — boot only validates it's a URL. Set a real Supabase URL to
+      # exercise auth locally.
+      SUPABASE_URL: https://your-project-ref.supabase.co
+    volumes:
+      - .:/app
+      - api_root_node_modules:/app/node_modules
+      - api_app_node_modules:/app/apps/api/node_modules
+      # No separate volume for dist: nest-cli's deleteOutDir rmdir()s the whole
+      # directory on every watch rebuild, which fails with EBUSY if dist is
+      # itself a volume mount point. dist has no native binaries (pg driver
+      # adapter, no Prisma engine), so plain bind-mount passthrough is fine.
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bearnance
+      POSTGRES_PASSWORD: bearnance
+      POSTGRES_DB: bearnance
+    ports:
+      - '5433:5432'
+    volumes:
+      - bearnance-postgres-dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bearnance -d bearnance']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  bearnance-postgres-dev:
+  web_root_node_modules:
+  web_app_node_modules:
+  ui_web_node_modules:
+  ui_core_node_modules:
+  design_tokens_node_modules:
+  web_next:
+  api_root_node_modules:
+  api_app_node_modules:
