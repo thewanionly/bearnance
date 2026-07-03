@@ -88,7 +88,7 @@ importers:
     devDependencies:
       '@babel/plugin-transform-modules-commonjs':
         specifier: ^8.0.1
-        version: 8.0.1(@babel/core@7.29.7)
+        version: 8.0.1
       '@bearnance/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -316,6 +316,9 @@ importers:
       '@testing-library/react':
         specifier: ^16.3.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@testing-library/user-event':
+        specifier: ^14.6.1
+        version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -9393,9 +9396,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@8.0.1(@babel/core@7.29.7)':
+  '@babel/helper-module-transforms@8.0.1':
     dependencies:
-      '@babel/core': 7.29.7
       '@babel/helper-module-imports': 8.0.0
       '@babel/helper-validator-identifier': 8.0.2
       '@babel/traverse': 8.0.0
@@ -9406,9 +9408,7 @@ snapshots:
 
   '@babel/helper-plugin-utils@7.29.7': {}
 
-  '@babel/helper-plugin-utils@8.0.1(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
+  '@babel/helper-plugin-utils@8.0.1': {}
 
   '@babel/helper-remap-async-to-generator@7.29.7(@babel/core@7.29.7)':
     dependencies:
@@ -9644,11 +9644,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/plugin-transform-modules-commonjs@8.0.1(@babel/core@7.29.7)':
+  '@babel/plugin-transform-modules-commonjs@8.0.1':
     dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-transforms': 8.0.1(@babel/core@7.29.7)
-      '@babel/helper-plugin-utils': 8.0.1(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 8.0.1
+      '@babel/helper-plugin-utils': 8.0.1
 
   '@babel/plugin-transform-named-capturing-groups-regex@7.29.7(@babel/core@7.29.7)':
     dependencies:
