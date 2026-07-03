@@ -1,4 +1,4 @@
-import { type ReactNode, createElement } from 'react';
+import { type ReactNode, createElement, forwardRef } from 'react';
 
 type PressableState = {
   focused: boolean;
@@ -41,6 +41,16 @@ export function Pressable({
 export function Text({ children, ...props }: MockComponentProps) {
   return createElement('Text', props, children);
 }
+
+export function View({ children, ...props }: MockComponentProps) {
+  return createElement('View', props, children);
+}
+
+export const TextInput = forwardRef<unknown, Record<string, unknown>>(
+  function TextInput(props, ref) {
+    return createElement('TextInput', { ...props, ref });
+  }
+);
 
 export const StyleSheet = {
   create<T>(styles: T) {
