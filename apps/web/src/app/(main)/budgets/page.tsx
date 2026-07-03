@@ -1,5 +1,9 @@
 import type { ReactElement } from 'react';
 
 export default function BudgetsPage(): ReactElement {
-  return <h1>BudgetsPage</h1>;
+  return (
+    <>
+      <h1 className="text-grey-900 text-preset-1 mt-4 font-bold">Budgets</h1>
+    </>
+  );
 }

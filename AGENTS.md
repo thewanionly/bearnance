@@ -34,4 +34,6 @@ When writing tests in ComponentName.test.tsx, follow the ff guidelines:
 
 ## Commit Messages
 
-- When asked to write a commit message, follow the conventions in Conventional Commits (https://www.conventionalcommits.org/en/v1.0.0/).
+- When asked to write a commit message, do the ff:
+  - Return a commit message following the conventions in Conventional Commits (https://www.conventionalcommits.org/en/v1.0.0/)
+  - Don't commit the message in behalf of the user

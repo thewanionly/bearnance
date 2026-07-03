@@ -1,7 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
 
-import Image from 'next/image';
 import Link from 'next/link';
+
+import { Icon } from '@bearnance/ui-web/components/Icon';
 
 export default function MainLayout({
   children,
@@ -9,44 +10,47 @@ export default function MainLayout({
   children: ReactNode;
 }>): ReactElement {
   return (
-    <section className="bg-grey-900 text-background">
-      <header>
-        <Link href="/">
-          <div className="relative mb-6 aspect-173/36 w-full max-w-[173px] min-w-[140px]">
-            <Image
-              src="/logo.svg"
-              alt="Bearnance"
-              fill
-              priority
-              sizes="(max-width: 188px) 140px, (max-width: 221px) calc(100vw - 48px), 173px"
-              className="object-contain"
-            />
-          </div>
-        </Link>
-        <nav>
-          <ul className="flex flex-col gap-4">
-            <li>
-              <Link href="/">Overview</Link>
-            </li>
-            <li>
-              <Link href="/transactions">Transactions</Link>
-            </li>
-            <li>
-              <Link href="/budgets">Budgets</Link>
-            </li>
-            <li>
-              <Link href="/pots">Pots</Link>
-            </li>
-            <li>
-              <Link href="/recurring-bills">Recurring Bills</Link>
-            </li>
-            <li>
-              <Link href="/?logged-in=false">Log out</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      {children}
-    </section>
+    <div className="max-w-limit flex min-h-dvh flex-col lg:mx-auto">
+      <main className="flex w-full flex-1 flex-col px-4 py-6 lg:min-w-0 lg:flex-row lg:items-center">
+        {children}
+      </main>
+      <nav
+        className="bg-grey-900 fixed bottom-0 w-full rounded-t-lg px-6 py-4 lg:hidden"
+        aria-label="primary"
+      >
+        <ul className="text-grey-300 flex justify-evenly gap-4">
+          <li>
+            <Link href="/">
+              <Icon name="bearnance-house" size="lg" aria-hidden />
+            </Link>
+          </li>
+          <li>
+            <Link href="/transactions">
+              <Icon name="bearnance-arrows-down-up" size="lg" aria-hidden />
+            </Link>
+          </li>
+          <li>
+            <Link href="/budgets">
+              <Icon name="bearnance-chart-donut" size="lg" aria-hidden />
+            </Link>
+          </li>
+          <li>
+            <Link href="/pots">
+              <Icon name="bearnance-jar-fill" size="lg" aria-hidden />
+            </Link>
+          </li>
+          <li>
+            <Link href="/recurring-bills">
+              <Icon name="bearnance-receipt" size="lg" aria-hidden />
+            </Link>
+          </li>
+          <li>
+            <Link href="/?logged-in=false">
+              <Icon name="log-out" size="lg" aria-hidden />
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 }

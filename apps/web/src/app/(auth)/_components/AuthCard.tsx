@@ -7,7 +7,7 @@ export type AuthCardProps = {
 
 export function AuthCard({ title, children }: AuthCardProps): ReactElement {
   return (
-    <div className="mx-auto w-[min(100%-2rem,35rem)] rounded-xl bg-white px-5 py-6">
+    <div className="mx-auto my-4 w-[min(100%-2rem,35rem)] rounded-xl bg-white px-5 py-6">
       <h1 className="text-preset-1 mb-8 font-bold">{title}</h1>
       {children}
     </div>
