@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel superseded runs on the same branch/PR.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install pnpm before setup-node so its cache can resolve the pnpm store.
+      # No version is pinned here — action-setup reads it from the root
+      # package.json `packageManager` field (pnpm@11.9.0).
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The Prisma client (apps/api) is gitignored and code-generated, so it is
+      # absent on a fresh checkout. Generate it before type-checking, testing,
+      # and building. `prisma generate` only reads the schema (no DB connection),
+      # but prisma.config.ts resolves DIRECT_URL at load time, so a placeholder
+      # is supplied purely to satisfy that resolution.
+      - name: Generate Prisma client
+        run: pnpm --filter api run db:generate
+        env:
+          DIRECT_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm check-types
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
