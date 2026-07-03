@@ -45,6 +45,7 @@
   --bearnance-spacing-300: 1.5rem;
   --bearnance-spacing-400: 2rem;
   --bearnance-spacing-500: 2.5rem;
+  --bearnance-container-limit: 90rem;
 }
 
 @theme inline {
@@ -92,4 +93,5 @@
   --spacing-300: var(--bearnance-spacing-300);
   --spacing-400: var(--bearnance-spacing-400);
   --spacing-500: var(--bearnance-spacing-500);
+  --container-limit: var(--bearnance-container-limit);
 }

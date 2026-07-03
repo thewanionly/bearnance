@@ -24,7 +24,7 @@ export default function RootLayout({
 }>): ReactElement {
   return (
     <html lang="en">
-      <body className={publicSans.className}>{children}</body>
+      <body className={`${publicSans.className} bg-beige-100`}>{children}</body>
     </html>
   );
 }

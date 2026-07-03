@@ -6,6 +6,7 @@
   "exports": {
     "./breakpoints": "./src/breakpoints.ts",
     "./colors": "./src/colors.ts",
+    "./containerWidths": "./src/containerWidths.ts",
     "./css": "./src/css.ts",
     "./effects": "./src/effects.ts",
     "./fonts.css": "./src/fonts.css",

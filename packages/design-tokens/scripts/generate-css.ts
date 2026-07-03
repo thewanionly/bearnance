@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import { colors } from '../src/colors.ts';
+import { containerWidths } from '../src/containerWidths.ts';
 import { shadows } from '../src/effects.ts';
 import { spacing } from '../src/spacing.ts';
 import {
@@ -72,6 +73,10 @@ const createRootDeclarations = (): CssDeclaration[] => [
     ([name, value]) =>
       [`--bearnance-spacing-${toKebabCase(name)}`, toRem(value)] as const
   ),
+  ...Object.entries(containerWidths).map(
+    ([name, value]) =>
+      [`--bearnance-container-${toKebabCase(name)}`, toRem(value)] as const
+  ),
 ];
 
 const toTailwindThemeVariableName = (
@@ -87,6 +92,7 @@ const toTailwindThemeVariableName = (
 
   if (
     tokenName.startsWith('color-') ||
+    tokenName.startsWith('container-') ||
     tokenName.startsWith('font-weight-') ||
     tokenName.startsWith('shadow-') ||
     tokenName.startsWith('spacing-')
