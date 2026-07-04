@@ -1,0 +1,168 @@
+name: Deploy to Render
+
+# Every push to `main` builds the images, pushes them to GHCR, and deploys them
+# to STAGING automatically. PRODUCTION is a manual promotion of the *same* image:
+# the production job waits for approval (configure the `production` GitHub
+# Environment with required reviewers), then deploys the identical sha image to
+# the production services.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: Build & push ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { app: web, dockerfile: apps/web/Dockerfile }
+          - { app: api, dockerfile: apps/api/Dockerfile }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.app }}
+          # `staging-latest` (bootstrap tag for the staging services; every main
+          # build goes to staging) + an immutable full-sha tag that both staging
+          # and production deploys pin to. `prod-latest` is promoted from the sha
+          # by the production job after approval.
+          tags: |
+            type=raw,value=staging-latest
+            type=sha,prefix=sha-,format=long
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          target: runner
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  staging:
+    name: Deploy to staging
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy migrations
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          if [ -z "$DIRECT_URL" ]; then
+            echo "DIRECT_URL secret not set for staging — skipping migrations."
+            exit 0
+          fi
+          pnpm --filter api run db:deploy
+
+      - name: Deploy to Render (staging)
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SUFFIX: staging
+        run: bash .github/scripts/deploy-to-render.sh
+
+  production:
+    name: Deploy to production
+    needs: staging
+    runs-on: ubuntu-latest
+    # Manual gate: add required reviewers to the `production` GitHub Environment.
+    # The whole job (migrations included) waits for approval before running.
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy migrations
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          if [ -z "$DIRECT_URL" ]; then
+            echo "DIRECT_URL secret not set for production — skipping migrations."
+            exit 0
+          fi
+          pnpm --filter api run db:deploy
+
+      - name: Deploy to Render (production)
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SUFFIX: prod
+        run: bash .github/scripts/deploy-to-render.sh
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Point `prod-latest` (the production services' bootstrap tag) at the image
+      # just released to production. Skipped when the deploy itself was skipped.
+      - name: Promote prod-latest
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "No production deploy happened — skipping prod-latest promotion."
+            exit 0
+          fi
+          for app in api web; do
+            docker buildx imagetools create \
+              --tag "ghcr.io/${REPO}/${app}:prod-latest" \
+              "ghcr.io/${REPO}/${app}:sha-${SHA}"
+          done

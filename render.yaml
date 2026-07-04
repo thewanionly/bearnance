@@ -1,0 +1,91 @@
+# Render Blueprint — bearnance project with `production` and `staging`
+# environments, each running the web + api images GitHub Actions pushes to
+# GHCR (see .github/workflows/deploy.yml).
+#
+# `runtime: image` + `plan: free` is supported (images are pulled, not built on
+# Render, so no Render build minutes are used). `autoDeployTrigger: off` because
+# prebuilt-image services are deployed via the Render API from Actions, not on
+# git push.
+#
+# The images must be PUBLIC on GHCR (make the repo public and set each package's
+# visibility to public). For PRIVATE images, add a registry credential in the
+# Render dashboard and reference it with `image.creds: <credential-name>`.
+#
+# Secrets (DATABASE_URL, DIRECT_URL, SUPABASE_URL, SUPABASE_JWT_SECRET,
+# WEB_APP_URL, ...) live in environment groups created directly in the Render
+# dashboard (`fromGroup` env vars can't use `sync: false`, so this is the only
+# way to keep them out of this file) and are referenced by name below.
+#
+# Deploy model (see .github/workflows/deploy.yml): every push to `main` builds the
+# images and deploys them to STAGING automatically; PRODUCTION is a manual approval
+# gate that promotes the same image. `staging-latest` is pushed on every build;
+# `prod-latest` is promoted only after a production deploy is approved. These urls
+# are just the initial Blueprint bootstrap — the Render API repoints each service
+# to an immutable sha image on every deploy.
+
+projects:
+  - name: bearnance
+    environments:
+      - name: production
+        services:
+          - type: web
+            runtime: image
+            name: bearnance-web-prod
+            plan: free
+            region: singapore
+            autoDeployTrigger: off
+            image:
+              url: ghcr.io/thewanionly/bearnance/web:prod-latest
+            healthCheckPath: /
+            envVars:
+              - fromGroup: bearnance-web-prod-env-group
+              - key: PORT
+                value: '3000'
+
+          - type: web
+            runtime: image
+            name: bearnance-api-prod
+            plan: free
+            region: singapore
+            autoDeployTrigger: off
+            image:
+              url: ghcr.io/thewanionly/bearnance/api:prod-latest
+            healthCheckPath: /api/v1
+            envVars:
+              - fromGroup: bearnance-api-prod-env-group
+              - key: PORT
+                value: '3002'
+              - key: NODE_ENV
+                value: production
+
+      - name: staging
+        services:
+          - type: web
+            runtime: image
+            name: bearnance-web-staging
+            plan: free
+            region: singapore
+            autoDeployTrigger: off
+            image:
+              url: ghcr.io/thewanionly/bearnance/web:staging-latest
+            healthCheckPath: /
+            envVars:
+              - fromGroup: bearnance-web-staging-env-group
+              - key: PORT
+                value: '3000'
+
+          - type: web
+            runtime: image
+            name: bearnance-api-staging
+            plan: free
+            region: singapore
+            autoDeployTrigger: off
+            image:
+              url: ghcr.io/thewanionly/bearnance/api:staging-latest
+            healthCheckPath: /api/v1
+            envVars:
+              - fromGroup: bearnance-api-staging-env-group
+              - key: PORT
+                value: '3002'
+              - key: NODE_ENV
+                value: production
