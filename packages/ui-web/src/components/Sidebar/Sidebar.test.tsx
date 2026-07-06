@@ -59,6 +59,46 @@ describe('Sidebar', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps nav rows at stable sizes and icon offsets', async () => {
+    const user = userEvent.setup();
+    render(<Default />);
+
+    const overview = screen.getByRole('button', { name: 'Overview' });
+    const toggle = screen.getByRole('button', { name: /minimize menu/i });
+
+    expect(overview).toHaveClass('min-h-[56px]', 'px-400');
+    expect(overview).toHaveClass(
+      '[&>span:last-child]:[text-box:trim-both_cap_alphabetic]'
+    );
+    expect(overview).not.toHaveClass(
+      'group-data-[state=collapsed]/sidebar:justify-center',
+      'group-data-[state=collapsed]/sidebar:px-250'
+    );
+    expect(toggle).toHaveClass('min-h-[56px]', 'px-400');
+    expect(toggle).not.toHaveClass(
+      'group-data-[state=collapsed]/sidebar:justify-center',
+      'group-data-[state=collapsed]/sidebar:px-250'
+    );
+
+    await user.click(toggle);
+
+    const collapsedOverview = screen.getByRole('button', { name: 'Overview' });
+    const collapsedToggle = screen.getByRole('button', {
+      name: /maximize menu/i,
+    });
+
+    expect(collapsedOverview).toHaveClass('min-h-[56px]', 'px-400');
+    expect(collapsedOverview).not.toHaveClass(
+      'group-data-[state=collapsed]/sidebar:justify-center',
+      'group-data-[state=collapsed]/sidebar:px-250'
+    );
+    expect(collapsedToggle).toHaveClass('min-h-[56px]', 'px-400');
+    expect(collapsedToggle).not.toHaveClass(
+      'group-data-[state=collapsed]/sidebar:justify-center',
+      'group-data-[state=collapsed]/sidebar:px-250'
+    );
+  });
+
   it('keeps nav buttons accessible by name once collapsed', () => {
     render(<Collapsed />);
 

@@ -121,7 +121,7 @@ function SidebarHeader({
     <div
       data-slot="sidebar-header"
       className={cn(
-        'flex h-[101px] shrink-0 items-center overflow-hidden px-400 group-data-[state=collapsed]/sidebar:justify-center group-data-[state=collapsed]/sidebar:px-250',
+        'flex h-[101px] shrink-0 items-center overflow-hidden px-400',
         className
       )}
       {...props}
@@ -129,12 +129,18 @@ function SidebarHeader({
       {hasLogoSlots ? (
         <>
           {logo && (
-            <span className="group-data-[state=collapsed]/sidebar:hidden">
+            <span
+              data-slot="sidebar-logo"
+              className="flex h-8 shrink-0 items-center group-data-[state=collapsed]/sidebar:hidden"
+            >
               {logo}
             </span>
           )}
           {logoMark && (
-            <span className="hidden group-data-[state=collapsed]/sidebar:block">
+            <span
+              data-slot="sidebar-logo-mark"
+              className="hidden h-8 shrink-0 items-center group-data-[state=collapsed]/sidebar:flex"
+            >
               {logoMark}
             </span>
           )}
@@ -186,7 +192,7 @@ function SidebarMenuItem({ className, ...props }: SidebarMenuItemProps) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  'flex w-full items-center gap-200 overflow-hidden rounded-r-xl border-l-4 px-400 py-200 text-preset-3 font-bold whitespace-nowrap outline-none transition-colors focus-visible:ring-3 focus-visible:ring-white/30 group-data-[state=collapsed]/sidebar:justify-center group-data-[state=collapsed]/sidebar:px-250 group-data-[state=collapsed]/sidebar:[&>span:last-child]:sr-only [&_svg]:shrink-0',
+  'flex min-h-[56px] w-full items-center gap-200 overflow-hidden rounded-r-xl border-l-4 px-400 py-200 text-preset-3 font-bold whitespace-nowrap outline-none transition-colors focus-visible:ring-3 focus-visible:ring-white/30 group-data-[state=collapsed]/sidebar:[&>span:last-child]:sr-only [&>span:last-child]:[text-box:trim-both_cap_alphabetic] [&_svg]:shrink-0',
   {
     variants: {
       isActive: {
@@ -266,7 +272,7 @@ function SidebarToggle({
         toggle();
       }}
       className={cn(
-        'text-preset-3 text-grey-300 flex w-full items-center gap-200 overflow-hidden rounded-r-xl border-l-4 border-l-transparent px-400 py-200 font-bold whitespace-nowrap transition-colors outline-none group-data-[state=collapsed]/sidebar:justify-center group-data-[state=collapsed]/sidebar:px-250 hover:text-white focus-visible:ring-3 focus-visible:ring-white/30 [&_svg]:shrink-0',
+        'text-preset-3 text-grey-300 flex min-h-[56px] w-full items-center gap-200 overflow-hidden rounded-r-xl border-l-4 border-l-transparent px-400 py-200 font-bold whitespace-nowrap transition-colors outline-none hover:text-white focus-visible:ring-3 focus-visible:ring-white/30 [&_svg]:shrink-0',
         className
       )}
       {...props}
@@ -275,7 +281,7 @@ function SidebarToggle({
         name="bearnance-arrow-fat-lines-left"
         className="transition-transform duration-300 group-data-[state=collapsed]/sidebar:rotate-180"
       />
-      <span className="group-data-[state=collapsed]/sidebar:sr-only">
+      <span className="[text-box:trim-both_cap_alphabetic] group-data-[state=collapsed]/sidebar:sr-only">
         {label}
       </span>
     </button>
