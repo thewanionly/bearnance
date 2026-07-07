@@ -59,10 +59,12 @@ Storybook runs at [http://localhost:6006](http://localhost:6006).
 
 ### Packages
 
+- `packages/design-tokens`: shared design tokens (color, spacing, typography) and generated CSS.
 - `packages/eslint-config`: shared ESLint flat configs.
 - `packages/jest-config`: shared Jest configs and mocks.
 - `packages/prettier-config`: shared Prettier config with import and Tailwind sorting.
 - `packages/typescript-config`: shared TypeScript configs.
+- `packages/ui-core`: cross-platform style/behavior contracts (variants, generated brand icons) consumed by `ui-web` and `ui-mobile`.
 - `packages/ui-mobile`: shared React Native UI components.
 - `packages/ui-web`: shared React/Tailwind UI components.
 
@@ -70,22 +72,63 @@ Storybook runs at [http://localhost:6006](http://localhost:6006).
 
 Run commands from the repository root.
 
-| Command                                   | Description                                   |
-| ----------------------------------------- | --------------------------------------------- |
-| `pnpm --filter web dev`                   | Start the primary web app on port 3000.       |
-| `pnpm --filter api dev`                   | Start the backend API on port 3002.           |
-| `pnpm --filter ui-docs dev`               | Start Storybook on port 6006.                 |
-| `pnpm --filter ui-docs build:storybook`   | Build the UI docs into `storybook-static`.    |
-| `pnpm --filter @bearnance/ui-mobile test` | Run the React Native UI package tests.        |
-| `pnpm build`                              | Build every workspace through Turborepo.      |
-| `pnpm lint`                               | Lint every workspace through Turborepo.       |
-| `pnpm check-types`                        | Type-check every workspace through Turborepo. |
-| `pnpm format:check`                       | Check formatting across the repository.       |
-| `pnpm format:fix`                         | Format the repository.                        |
-| `pnpm cz`                                 | Create a Conventional Commit with Commitizen. |
+| Command                                   | Description                                               |
+| ----------------------------------------- | --------------------------------------------------------- |
+| `pnpm --filter web dev`                   | Start the primary web app on port 3000.                   |
+| `pnpm --filter api dev`                   | Start the backend API on port 3002.                       |
+| `pnpm --filter ui-docs dev`               | Start Storybook on port 6006.                             |
+| `pnpm --filter ui-docs build:storybook`   | Build the UI docs into `storybook-static`.                |
+| `pnpm --filter @bearnance/ui-mobile test` | Run the React Native UI package tests.                    |
+| `pnpm build`                              | Build every workspace through Turborepo.                  |
+| `pnpm lint`                               | Lint every workspace through Turborepo.                   |
+| `pnpm check-types`                        | Type-check every workspace through Turborepo.             |
+| `pnpm format:check`                       | Check formatting across the repository.                   |
+| `pnpm format:fix`                         | Format the repository.                                    |
+| `pnpm cz`                                 | Create a Conventional Commit with Commitizen.             |
+| `pnpm dev:docker`                         | Run web + api + Postgres in Docker.                       |
+| `pnpm dev:docker:build`                   | Rebuild the dev Docker images (after dependency changes). |
 
 `pnpm dev` runs every workspace `dev` task through Turborepo. Prefer filtered
 commands when you only need one app.
+
+## Docker
+
+Local development can run natively (`pnpm dev`) or fully inside Docker:
+
+```sh
+pnpm dev:docker
+```
+
+This starts `web` (`:3000`), `api` (`:3002`), and Postgres (`:5433`) as
+containers, defined in `docker-compose.dev.yml`. Source is bind-mounted for
+hot reload; `node_modules` for every workspace live in container-only named
+volumes so the Linux-built native binaries (e.g. `sharp`, Prisma) are never
+shadowed by the host's (macOS) install. After changing dependencies, rebuild
+with `pnpm dev:docker:build`. Native `pnpm dev` remains the faster fallback.
+
+Each app also has a production Dockerfile (`apps/web/Dockerfile`,
+`apps/api/Dockerfile`) with `dev`, `pruner`, `installer`, and `runner`
+stages built via `turbo prune --docker`; `runner` is the default
+`docker build` target. Build context must be the repository root. See
+`apps/web/README.md` and `apps/api/README.md` for build/run commands.
+
+## CI/CD & Deployment
+
+- **CI** (`.github/workflows/ci.yml`): every pull request and push to `main`
+  runs formatting, lint, type-check, unit tests, and build through
+  Turborepo.
+- **Deploy** (`.github/workflows/deploy.yml`): every push to `main` builds
+  the `web` and `api` Docker images, pushes them to GHCR, then deploys to
+  the Render **staging** environment automatically. **Production** is a
+  manual approval gate (a GitHub Environment with a required reviewer) that
+  promotes the same image, unchanged, to production.
+- Infra is declared in `render.yaml` (a Render Blueprint): one `bearnance`
+  Render project with `production` and `staging` environments, each running
+  `web` + `api` as prebuilt-image services on Render's free tier (images are
+  pulled, not built, so no Render build minutes are used).
+- The database is Supabase Postgres. Migrations run inside the deploy
+  pipeline (`prisma migrate deploy` against `DIRECT_URL`), not at container
+  boot — see `apps/api/README.md`.
 
 ## Development Notes
 

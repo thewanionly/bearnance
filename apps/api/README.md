@@ -64,6 +64,43 @@ verifies the resulting JWT on each request.
    connection strings into `DATABASE_URL` / `DIRECT_URL` for
    staging/production environments.
 
+## Docker
+
+Run the api (with web and Postgres) in Docker from the repository root:
+
+```sh
+pnpm dev:docker
+```
+
+This starts `api` in watch mode against a containerized Postgres, with
+`DATABASE_URL`/`DIRECT_URL`/`SUPABASE_URL`/`WEB_APP_URL` injected by
+`docker-compose.dev.yml` — no local `.env` needed for the default flow.
+Native `pnpm --filter api dev` remains the faster fallback.
+
+Build and run the production image directly:
+
+```sh
+docker build -f apps/api/Dockerfile -t bearnance-api .
+docker run -p 3002:3002 --env-file apps/api/.env bearnance-api
+```
+
+The build context must be the repository root. The image ships the
+compiled `dist/` plus a production-only `node_modules` — no Prisma
+query-engine binary is needed, since the API uses the `pg` driver adapter.
+Migrations are **not** run at container boot; see Deployment below.
+
+## Deployment
+
+Pushes to `main` build this image in GitHub Actions and publish it to GHCR
+(`ghcr.io/<repo>/api`). The pipeline runs `pnpm --filter api run db:deploy`
+(`prisma migrate deploy`) against Supabase's `DIRECT_URL` before deploying,
+so the schema is current before the new image goes live. Render pulls the
+image — staging deploys automatically on every push to `main`; production
+requires a manual approval (a GitHub Environment reviewer gate) and
+promotes the same image. See the root README's
+[CI/CD & Deployment](../../README.md#cicd--deployment) section and
+`render.yaml`.
+
 ## Endpoints
 
 All routes are protected (require `Authorization: Bearer <supabase_access_token>`)

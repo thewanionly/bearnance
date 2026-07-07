@@ -60,6 +60,37 @@ apps/web
 `-- tsconfig.json
 ```
 
+## Docker
+
+Run this app (with the api and Postgres) in Docker from the repository root:
+
+```sh
+pnpm dev:docker
+```
+
+The container hot-reloads from the bind-mounted source; `node_modules` live
+in a container-only volume so the Linux-built dependencies aren't shadowed
+by the host's. See the root `docker-compose.dev.yml`.
+
+Build and run the production image directly:
+
+```sh
+docker build -f apps/web/Dockerfile -t bearnance-web .
+docker run -p 3000:3000 bearnance-web
+```
+
+The build context must be the repository root (Turborepo prunes the
+monorepo down to the `web` workspace). The production image runs Next.js
+`output: 'standalone'` — see `apps/web/Dockerfile` for the stage layout.
+
+## Deployment
+
+Pushes to `main` build this image in GitHub Actions and publish it to GHCR
+(`ghcr.io/<repo>/web`); Render pulls the prebuilt image and deploys it —
+staging automatically, production behind a manual approval gate. See the
+root README's [CI/CD & Deployment](../../README.md#cicd--deployment)
+section and `render.yaml`.
+
 ## Development Notes
 
 - `src/app/layout.tsx` owns the root document shell and app metadata.
