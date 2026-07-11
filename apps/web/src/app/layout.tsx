@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { SupabaseEnvProvider } from '#components/SupabaseEnvProvider/SupabaseEnvProvider';
+import { SupabaseProvider } from '#components/SupabaseProvider/SupabaseProvider';
 import { getSupabaseEnv } from '#lib/supabase-env';
 
 import './globals.css';
@@ -31,7 +32,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${publicSans.className} bg-beige-100`}>
         <SupabaseEnvProvider value={supabaseEnv}>
-          {children}
+          <SupabaseProvider>{children}</SupabaseProvider>
         </SupabaseEnvProvider>
       </body>
     </html>
