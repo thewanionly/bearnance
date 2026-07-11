@@ -11,10 +11,18 @@
 # visibility to public). For PRIVATE images, add a registry credential in the
 # Render dashboard and reference it with `image.creds: <credential-name>`.
 #
-# Secrets (DATABASE_URL, DIRECT_URL, SUPABASE_URL, SUPABASE_JWT_SECRET,
-# WEB_APP_URL, ...) live in environment groups created directly in the Render
-# dashboard (`fromGroup` env vars can't use `sync: false`, so this is the only
-# way to keep them out of this file) and are referenced by name below.
+# Per-environment config lives in environment groups created directly in the Render
+# dashboard (`fromGroup` env vars can't use `sync: false`, so this is the only way to
+# keep values out of this file) and is referenced by name below:
+#
+#   api groups: DATABASE_URL, DIRECT_URL, SUPABASE_URL, WEB_APP_URL
+#   web groups: SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY
+#
+# Do NOT set SUPABASE_JWT_SECRET: the API verifies Supabase tokens via JWKS (asymmetric
+# ES256, derived from SUPABASE_URL). Setting the secret flips the guard to the HS256 path
+# and every authenticated request 401s.
+# The web vars are read at runtime (not NEXT_PUBLIC_ build-time inlining) so the promoted
+# image picks up each environment's values — see apps/web/src/lib/supabase-env.ts.
 #
 # Deploy model (see .github/workflows/deploy.yml): every push to `main` builds the
 # images and deploys them to STAGING automatically; PRODUCTION is a manual approval
