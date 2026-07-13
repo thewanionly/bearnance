@@ -26,7 +26,7 @@
     "@bearnance/eslint-config": "workspace:*",
     "@bearnance/prettier-config": "workspace:*",
     "@bearnance/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
+    "@types/node": "^24.13.2",
     "eslint": "^10.6.0",
     "prettier": "^3.7.4",
     "typescript": "6.0.3"

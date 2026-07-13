@@ -16,7 +16,7 @@
 # final stage so a plain `docker build` (no --target) builds production.
 
 # ---- base -------------------------------------------------------------------
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 RUN apk add --no-cache libc6-compat openssl
 RUN corepack enable
 WORKDIR /app
